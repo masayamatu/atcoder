@@ -1,0 +1,16 @@
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.csproj.AssemblyReference.cache
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.GeneratedMSBuildEditorConfig.editorconfig
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.AssemblyInfoInputs.cache
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.AssemblyInfo.cs
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.csproj.CoreCompileInputs.cache
+D:\argorithm\atcoder\bin\Debug\net5.0\atcoder.exe
+D:\argorithm\atcoder\bin\Debug\net5.0\atcoder.deps.json
+D:\argorithm\atcoder\bin\Debug\net5.0\atcoder.runtimeconfig.json
+D:\argorithm\atcoder\bin\Debug\net5.0\atcoder.runtimeconfig.dev.json
+D:\argorithm\atcoder\bin\Debug\net5.0\atcoder.dll
+D:\argorithm\atcoder\bin\Debug\net5.0\ref\atcoder.dll
+D:\argorithm\atcoder\bin\Debug\net5.0\atcoder.pdb
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.dll
+D:\argorithm\atcoder\obj\Debug\net5.0\ref\atcoder.dll
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.pdb
+D:\argorithm\atcoder\obj\Debug\net5.0\atcoder.genruntimeconfig.cache

@@ -1,0 +1,62 @@
+static int[] NList => ReadLine().Split().Select(int.Parse).ToArray();
+static int[][] NMap(int n) => Enumerable.Repeat<int>(0, n).Select(_ => NList).ToArray();
+b >>= 1;
+map[l].Skip(1).Contains(bit)
+using System;
+using static System.Console;
+using System.Collections.Generic;
+using System.Linq;
+ 
+namespace abc128
+{
+    class Program
+    {
+        static int[] NList => ReadLine().Split().Select(int.Parse).ToArray();
+        static int[][] NMap(int n) => Enumerable.Repeat<int>(0, n).Select(_ => NList).ToArray();
+        public static void Main()
+        {
+            var nm = NList;
+            var map = NMap(nm[1]);
+            var pList = NList;
+            WriteLine(Switches(nm[0], nm[1], map, pList));
+        }
+        static int Switches(int n, int m, int[][] map, int[] pList)
+        {
+            var result = 0;
+            var bitMax = 1 << n;
+            for (var b = 0; b < bitMax; ++b)
+            {
+                if (Check(m, b, map, pList))
+                {
+                    ++result;
+                }
+            }
+            return result;
+        }
+        static bool Check(int m, int b, int[][] map, int[] p)
+        {
+            var onCount = new int[m];
+            var bit = 1;
+            while (b > 0)
+            {
+                if ((b & 1) == 1)
+                {
+                    for (var l = 0; l < m; ++l)
+                    {
+                        if (map[l].Skip(1).Contains(bit))
+                        {
+                            ++onCount[l];
+                        }
+                    }
+                }
+                b >>= 1;
+                ++bit;
+            }
+            for (var l = 0; l < m; ++l)
+            {
+                if (onCount[l] % 2 != p[l]) return false;
+            }
+            return true;
+        }
+    }
+}
