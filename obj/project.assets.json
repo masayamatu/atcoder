@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\argorithm\\atcoder\\atcoder.csproj",
+      "projectUniqueName": "C:\\Users\\mmasa\\OneDrive\\ドキュメント\\GitHub\\atcoder\\atcoder.csproj",
       "projectName": "atcoder",
-      "projectPath": "D:\\argorithm\\atcoder\\atcoder.csproj",
+      "projectPath": "C:\\Users\\mmasa\\OneDrive\\ドキュメント\\GitHub\\atcoder\\atcoder.csproj",
       "packagesPath": "C:\\Users\\mmasa\\.nuget\\packages\\",
-      "outputPath": "D:\\argorithm\\atcoder\\obj\\",
+      "outputPath": "C:\\Users\\mmasa\\OneDrive\\ドキュメント\\GitHub\\atcoder\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mmasa\\AppData\\Roaming\\NuGet\\NuGet.Config",

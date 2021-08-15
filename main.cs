@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using static CompLib.CompLib;
+using DataStructure;
 
 namespace atcoder
 {
@@ -9,7 +10,7 @@ namespace atcoder
     {
         static void Main(string[] args)
         {
-            Solve.ABC054_C();
+            Solve.ABC106_D();
         }
     }
 }

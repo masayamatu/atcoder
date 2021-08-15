@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using static CompLib.CompLib;
+using DataStructure;
 
 namespace atcoder
 {
@@ -400,6 +401,137 @@ namespace atcoder
                 }
             }
             Console.WriteLine(count);
+        }
+        public static void pk_A()
+        {
+            int N = int.Parse(Console.ReadLine());
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            var cumlativesum = new CumulativeSum(read);
+            var max = new long[N];
+            for(int i = 1; i <= N; i++)
+            {
+                for(int j = 0; j < N - (i-1); j++)
+                {
+                    long tempMax = cumlativesum.GetSum(j, j + i);
+                    max[i-1] = Math.Max(max[i-1], tempMax);
+                }
+            }
+            for(int i = 0; i < N; i++)
+            {
+                Console.WriteLine(max[i]);
+            }
+        }
+        public static void JOI2009_1()
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            var yado = new int[read[0] - 1];
+            var move = new int[read[1]];
+            
+            for(int i = 0; i < read[0] - 1; i++)
+            {
+                yado[i] = int.Parse(Console.ReadLine());
+            }
+            var cumYado = new CumulativeSum(yado);
+            for(int i = 0; i < read[1]; i++)
+            {
+                move[i] = int.Parse(Console.ReadLine());
+            }
+            long sum = 0;
+            int now = 1;
+            for(int i = 0; i < read[1]; i++)
+            {
+                if(move[i] < 0) sum += cumYado.GetSum((now - 1) + move[i], (now - 1));
+                else sum += cumYado.GetSum((now - 1),(now - 1) + move[i]);
+                now += move[i];
+            }
+            Console.WriteLine(sum % 100000);
+        }
+        public static void JOI2011_1()
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            int N = int.Parse(Console.ReadLine());
+            var fields = new char[read[0] + 1][];
+            var cumsJ = new int[read[0] + 1][];
+            var cumsO = new int[read[0] + 1][];
+            var cumsI = new int[read[0] + 1][];
+            fields[0] = new char[read[1] + 1];
+            cumsJ[0] = new int[read[1] + 1];
+            cumsO[0] = new int[read[1] + 1];
+            cumsI[0] = new int[read[1] + 1];
+            int sumJ = 0;
+            int sumO = 0;
+            int sumI = 0;
+            for(int i = 1; i < read[0] + 1; i++)
+            {
+                var read2 = Console.ReadLine().ToCharArray();
+                fields[i] = new char[read[1] + 1];
+                cumsJ[i] = new int[read[1] + 1];
+                cumsO[i] = new int[read[1] + 1];
+                cumsI[i] = new int[read[1] + 1];
+                for(int j = 1; j < read[1] + 1; j++)
+                {
+                    fields[i][j] = read2[j - 1];
+                    if(fields[i][j] == 'J')
+                    {
+                        cumsJ[i][j] = cumsJ[i - 1][j] + cumsJ[i][j - 1] - cumsJ[i - 1][j - 1] + 1;
+                        cumsO[i][j] = cumsO[i - 1][j] + cumsO[i][j - 1] - cumsO[i - 1][j - 1];
+                        cumsI[i][j] = cumsI[i - 1][j] + cumsI[i][j - 1] - cumsI[i - 1][j - 1];
+
+                    }
+                    else if(fields[i][j] == 'O')
+                    {
+                        cumsJ[i][j] = cumsJ[i - 1][j] + cumsJ[i][j - 1] - cumsJ[i - 1][j - 1];
+                        cumsO[i][j] = cumsO[i - 1][j] + cumsO[i][j - 1] - cumsO[i - 1][j - 1] + 1;
+                        cumsI[i][j] = cumsI[i - 1][j] + cumsI[i][j - 1] - cumsI[i - 1][j - 1];
+
+                    }
+                    else
+                    {
+                        cumsJ[i][j] = cumsJ[i - 1][j] + cumsJ[i][j - 1] - cumsJ[i - 1][j - 1];
+                        cumsO[i][j] = cumsO[i - 1][j] + cumsO[i][j - 1] - cumsO[i - 1][j - 1];
+                        cumsI[i][j] = cumsI[i - 1][j] + cumsI[i][j - 1] - cumsI[i - 1][j - 1] + 1;
+                    }
+                }
+            }
+            for(int i = 0; i < N; i++)
+            {
+                var read3 = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                sumJ = cumsJ[read3[2]][read3[3]] + cumsJ[read3[0] - 1][read3[1] - 1] - cumsJ[read3[0] - 1][read3[3]] - cumsJ[read3[2]][read3[1] - 1];
+                sumO = cumsO[read3[2]][read3[3]] + cumsO[read3[0] - 1][read3[1] - 1] - cumsO[read3[0] - 1][read3[3]] - cumsO[read3[2]][read3[1] - 1];
+                sumI = cumsI[read3[2]][read3[3]] + cumsI[read3[0] - 1][read3[1] - 1] - cumsI[read3[0] - 1][read3[3]] - cumsI[read3[2]][read3[1] - 1];
+                Console.WriteLine($"{sumJ} {sumO} {sumI}");
+            }
+        }
+        public static void ABC106_D()
+        {
+            var nmq = Console.ReadLine().Split().Select(int.Parse).ToArray();
+             var count = new int[nmq[0]][];
+             for(int i = 0; i < count.Length; i++)
+             {
+                 count[i] = new int[nmq[0]];
+             }
+            for(int i = 0; i < nmq[1]; i++)
+            {
+                var lr = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                count[lr[0] - 1][lr[1] - 1]++;
+            }
+             for(int l = 0; l < nmq[0]; l++)
+                {
+                    for(int r = l + 1; r < nmq[0]; r++)
+                    {
+                        count[l][r] += count[l][r-1];
+                    }
+                }
+            for(int i = 0; i < nmq[2]; i++)
+            {
+                var pq = Console.ReadLine().Split().Select(int.Parse).ToArray();
+                int ans = 0;
+                for(int l = pq[0] - 1; l < pq[1]; l++)
+                {
+                    ans += count[l][pq[1] - 1];
+                }
+                Console.WriteLine(ans);
+            }
         }
     }
 }
