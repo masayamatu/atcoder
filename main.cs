@@ -15,7 +15,7 @@ namespace atcoder
         const long longMax = 2000000000000000000;
         static void Main(string[] args)
         {
-            Solve.educational_DP_M();
+            Solve.typical_dp_E();
         }
     }
 }

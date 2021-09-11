@@ -1356,6 +1356,9 @@ namespace atcoder
         if(sum[k] < 0) sum[k] += mod;
         Console.WriteLine(sum[k]);
     }
+    /// <summary>
+    /// DP 和の通り数数え上げ
+    /// </summary>
     public static void typical_dp_A()
     {
         var n = int.Parse(Console.ReadLine());
@@ -1377,6 +1380,9 @@ namespace atcoder
         }
         Console.WriteLine(sum);
     }
+    /// <summary>
+    /// DP ゲーム
+    /// </summary>
     public static void typical_dp_B()
     {
         var ab = Console.ReadLine().Split().Select(int.Parse).ToArray();
@@ -1400,6 +1406,309 @@ namespace atcoder
             }
         }
         Console.WriteLine(dp[ab[0], ab[1]]);
+
+    }
+    /// <summary>
+    /// 区DP　slime
+    /// </summary>
+    public static void educational_DP_N()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var sum = new long[N + 1];
+        var dp = new long[N + 1, N + 1];
+        for(int i = 0; i < N; i++)
+        {
+            sum[i + 1] = sum[i] + a[i];
+        }
+        for(int i = 0; i < dp.GetLength(0); i++)
+        {
+            for(int j = 0; j < dp.GetLength(1); j++)
+            {
+                dp[i, j] = 0;
+            }
+        }
+        for(int bet = 1; bet < N; bet++)
+        {
+            for(int l = 0; l < N - bet; l++)
+            {
+                long temp = longMax;
+                for(int k = l; k < l + bet; k++)
+                {
+                    //区間の合成に利用された最小コストを取得
+                    temp = Math.Min(temp, dp[l, k] + dp[k + 1,l + bet]);   
+                }
+                dp[l, l + bet] = temp + sum[l + bet + 1] - sum[l];
+            }
+        }
+        
+        Console.WriteLine(dp[0, N - 1]);
+
+
+    }
+    /// <summary>
+    /// DP
+    /// </summary>
+    public static void ABC040_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var dp = new long[N];
+        for(int i = 1; i < N; i++)
+        {
+            if(i >= 2)
+            {
+                dp[i] = Math.Min(dp[i - 1] + Math.Abs(a[i] - a[i - 1]), dp[i - 2] + Math.Abs(a[i] - a[i - 2]));
+            }
+            else
+            {
+                dp[i] = Math.Abs(a[1] - a[0]);
+            }
+        }
+        Console.WriteLine(dp[N - 1]);
+    }
+    /// <summary>
+    /// DP
+    /// </summary>
+    public static void ABC129_C()
+    {
+        var nm = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var stairs = new bool[nm[0] + 1];
+        for(int i = 0; i < nm[1]; i++)
+        {
+            var temp = int.Parse(Console.ReadLine());
+            stairs[temp] = true;
+        }
+        var dp = new long[nm[0] + 1];
+        var mod = 1000000007;
+        dp[0] = 1;
+        for(int i = 1; i <= nm[0]; i++)
+        {
+            if(i < 2)
+            {
+                if(!stairs[i]) dp[1] = 1;
+            }
+            else
+            {
+                if(!stairs[i])
+                {
+                    if(!stairs[i - 1] && !stairs[i - 2])
+                    {
+                        dp[i] = (dp[i - 1] + dp[i - 2]) % mod;
+                    }
+                    else if(!stairs[i - 1])
+                    {
+                        dp[i] = dp[i - 1] % mod;
+                    }
+                    else
+                    {
+                        dp[i] = dp[i - 2] % mod;
+                    }
+                }
+                else
+                {
+                    dp[i] = 0;
+                }
+            }
+        }
+        Console.WriteLine(dp[nm[0]] % mod);
+    }
+    /// <summary>
+    /// 累積和
+    /// </summary>
+    public static void ABC099_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var dp = new int[100001];
+        
+        for(int i = 0; i < 100001; i++)
+        {
+           dp[i] = intMax;
+        }
+        dp[0] = 0;
+        dp[1] = 1;
+        for(int i = 1; i < 100001; i++)
+        {
+            for(int k = 1; Math.Pow(6, k) <= i; k++)
+            {
+                dp[i] =　Math.Min(dp[i], dp[i - (int)Math.Round(Math.Pow(6, k),0)] + 1);
+            }
+            for(int k = 1; Math.Pow(9, k) <= i; k++)
+            {
+                dp[i] =　Math.Min(dp[i], dp[i - (int)Math.Round(Math.Pow(9, k), 0)] + 1);
+            }
+            dp[i] = Math.Min(dp[i], dp[i - 1] + 1);
+        }
+        Console.WriteLine(dp[N]);
+    }
+    public static void ABC037_C()
+    {
+        var nk = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var sum = new long[nk[0] + 1];
+        for(int i = 0; i < nk[0]; i++)
+        {
+            sum[i + 1] = sum[i] + a[i];
+        }
+        long ans = 0;
+        for(int i = 0; i < nk[0] - nk[1] + 1; i++)
+        {
+            ans += sum[i + nk[1]] - sum[i];
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical_dp_C()
+    {
+        int K = int.Parse(Console.ReadLine());
+        var R = new int[(int)Math.Pow(2, K)];
+        for(int i = 0; i < Math.Pow(2, K); i++)
+        {
+            R[i] = int.Parse(Console.ReadLine());
+        }
+        var dp = new double[(int)Math.Pow(2, K) + 1, K + 1];
+        for(int i = 0; i < 1 << K; i++)
+        {
+            dp[i, 0] = 1;
+        }
+        
+        for(int j = 0; j < K; j++)
+        {
+            for(int i = 0; i < 1 << K; i++)
+            {
+                double p = 0;
+                for(int l = 0; l < 1 << j; l++)
+                {
+                    int candidate = ((i ^ 1 << j) & ~((1 << j) - 1)) + l;
+                    p += dp[candidate, j] * 1.0/(1 + Math.Pow(10.0, (R[candidate] - R[i])/400.0));
+                }
+                dp[i, j + 1] = p * dp[i, j];
+                
+            }
+        }
+        for(int i = 0; i < 1 << K; i++)
+        {
+            Console.WriteLine("{0:f9}",dp[i, K]);
+        }
+    }
+    public static void typical_dp_D()
+    {
+        var nd = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long n = nd[0];
+        long d = nd[1];
+        int l = 0;
+        int m = 0;
+        int k = 0;
+        double ans = 0;
+        var dp = new double[2, 70, 70, 70];
+        while(d % 2 == 0)
+        {
+            l++;
+            d /= 2;
+        }
+        while(d % 3 == 0)
+        {
+            m++;
+            d /= 3;
+        }
+        while(d % 5 == 0)
+        {
+            k++;
+            d /= 5;
+        }
+        if(d > 1)
+        {
+            ans = 0.0;
+            Console.WriteLine(ans);
+            return;
+        }
+        dp[0,0,0,0] = 1.0;
+        for(int i = 0; i < n; i++)
+        {
+            int cur = i % 2;
+            int tar = 1 ^ cur;
+            for(int x = 0; x < 70; x++)
+            {
+                for(int y = 0; y < 50; y++)
+                {
+                    for(int z = 0; z < 40; z++)
+                    {
+                        if(x == 0 && y == 0 && z == 0)
+                        {
+                            //dp[tar, x, y, z] = 1;
+                            //continue;
+                        }
+                        dp[tar, x, y, z] = 0;
+                    }
+                }
+            }
+            for(int x = 0; x < 70; x++)
+            {
+                for(int y = 0; y < 50; y++)
+                {
+                    for(int z = 0; z < 40; z++)
+                    {
+                        if(dp[cur, x, y, z] == 0)continue;
+                        dp[tar, x, y, z] += dp[cur, x, y, z] / 6.0;
+                        dp[tar, Math.Min(69, x + 1), y, z] += dp[cur, x, y, z] / 6.0;
+                        dp[tar, x, Math.Min(49, y + 1), z] += dp[cur, x, y, z] / 6.0;
+                        dp[tar, Math.Min(69, x + 2), y, z] += dp[cur, x, y, z] / 6.0;
+                        dp[tar, x, y, Math.Min(39, z + 1)] += dp[cur, x, y, z] / 6.0;
+                        dp[tar, Math.Min(69, x + 1), Math.Min(49, y + 1), z] += dp[cur, x, y, z] / 6.0;
+
+                    }
+                }
+            }
+        }
+        for(int x = l; x < 70; x++)
+        {
+            for(int y = m; y < 50; y++)
+            {
+                for(int z = k; z < 40; z++)
+                {
+                    ans += dp[n % 2, x, y, z];
+                }
+            }
+        }
+        Console.WriteLine(ans);
+        
+    }
+    public static void typical_dp_E()
+    {
+        int D = int.Parse(Console.ReadLine());
+        var N = Console.ReadLine().ToCharArray();
+        var mod = 1000000007;
+        var dp = new long[10005, 105, 2];
+        dp[0, 0, 0] = 1;
+        for(int i = 1; i <= N.Length; i++)
+        {
+            for(int j = 0; j < D; j++)
+            {
+                for(int k = 0; k < 10; k++)
+                {
+                    int now = N[i - 1] - '0';
+                    if(now > k)
+                    {
+                        dp[i, (j + k) % D, 1] += (dp[i - 1, j, 0] + dp[i - 1, j, 1] % mod);
+                        dp[i, (j + k) % D, 1] %= mod;
+                    }
+                    else if(now == k)
+                    {
+                        dp[i, (j + k) % D, 1] += dp[i - 1, j, 1];
+                        dp[i, (j + k) % D, 0] += dp[i - 1, j, 0];
+                        dp[i, (j + k) % D, 1] %= mod;
+                        dp[i, (j + k) % D, 0] %= mod;
+                    }
+                    else
+                    {
+                        dp[i, (j + k) % D, 1] += dp[i - 1, j, 1];
+                        dp[i, (j + k) % D, 1] %= mod;
+                    }
+                }
+            }
+        }
+        long ans = (dp[N.Length, 0, 0] + dp[N.Length, 0, 1] - 1 + mod) % mod;
+        Console.WriteLine(ans);
+
 
     }
     }
