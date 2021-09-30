@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using static CompLib.CompLib;
-using DataStructure;
+//using static CompLib.CompLib;
+//using DataStructure;
 
 namespace atcoder
 {
@@ -15,7 +15,8 @@ namespace atcoder
         const long longMax = 2000000000000000000;
         static void Main(string[] args)
         {
-            Solve.typical_dp_E();
+            Solve.ABC103_C();
+
         }
     }
 }
