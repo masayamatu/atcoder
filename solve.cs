@@ -4546,5 +4546,380 @@ namespace atcoder
             Console.WriteLine(l);
         }
     }
+    public static void ABC107_B()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var fields = new char[HW[0]][];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            fields[i] = Console.ReadLine().ToCharArray();
+        }
+        var removeH = new List<int>();
+        var removeW = new List<int>();
+        for(int i = 0; i < HW[0]; i++)
+        {
+            var ok = true;
+            for(int j = 0; j < HW[1]; j++)
+            {
+                if(fields[i][j] == '#')
+                {
+                    ok = false;
+                }
+            }
+            if(ok) removeH.Add(i);
+        }
+        for(int i = 0; i < HW[1]; i++)
+        {
+            var ok = true;
+            for(int j = 0; j < HW[0]; j++)
+            {
+                if(fields[j][i] == '#')
+                {
+                    ok = false;
+                }
+            }
+            if(ok) removeW.Add(i);
+        }
+        var result = new List<List<char>>();
+        int temp = 0;
+        for(int i = 0; i < HW[0]; i++)
+        {
+            if(removeH.Contains(i))continue;
+            result.Add(new List<char>());
+            for(int j = 0; j < HW[1]; j++)
+            {
+                if(removeW.Contains(j))continue;
+                result[temp].Add(fields[i][j]);
+            }
+            temp++;
+        }
+        foreach(var h in result)
+        {
+            int count = 0;
+            foreach(var w in h)
+            {
+                if(count == h.Count() - 1)
+                {
+                    Console.WriteLine(w);
+                }
+                else
+                {
+                    Console.Write(w);
+                }
+                count++;
+            }
+        }
+    }
+    public static void ABC086_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new List<(int min, int x, int y)>();
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            list.Add((read[0], read[1], read[2]));
+        }
+        var ok = true;
+        (int min, int x, int y) now = (0, 0, 0);
+        for(int i = 0; i < list.Count(); i++)
+        {
+            var dif = Math.Abs(list[i].x - now.x) + Math.Abs(list[i].y - now.y);
+            var difTime = Math.Abs(list[i].min - now.min);
+            if(dif > difTime)
+            {
+                ok = false;
+                break;
+            }
+            else if(dif % 2 == 0 && difTime % 2 == 1)
+            {
+                ok = false;
+                break;
+            }
+            else if(dif % 2 == 1 && difTime % 2 == 0)
+            {
+                ok = false;
+                break;
+            }
+            now = (list[i].min, list[i].x, list[i].y);
+        }
+        if(ok) Console.WriteLine("Yes");
+        else Console.WriteLine("No");
+    }
+    public static void ABC096_C()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var fields = new char[HW[0]][];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            fields[i] = Console.ReadLine().ToCharArray();
+        }
+        var x = new int[]{-1, 0, 1};
+        var y = new int[]{-1, 0, 1};
+        var ok = true;
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                if(fields[i][j] == '#')
+                {
+                    var check = false;
+                    foreach(var dx in x)
+                    {
+                        foreach(var dy in y)
+                        {  
+                            if((dx == 1 && dy == 1 ) ||  (dx == -1 && dy == 1 ) ||  (dx == 1 && dy == -1 ) ||  (dx == -1 && dy == -1 ) ||  (dx == 0 && dy == 0 ))
+                            {
+                                continue;
+                            }
+                            if(i + dy >= 0 && i + dy <= HW[0] - 1 && j + dx >= 0 && j + dx <= HW[1] - 1)
+                            {
+                                if(fields[i + dy][j + dx] == '#')
+                                {
+                                    check = true;
+                                }
+                            }
+                            
+                        }
+                    }
+                    if(check == false)
+                    {
+                        Console.WriteLine("No");
+                        return;
+                    }
+                }
+                
+            }
+        }
+        if(ok)Console.WriteLine("Yes");
+    }
+    public static void keyence2019_B()
+    {
+        var S = Console.ReadLine();
+        for(int i = 0; i < S.Length; i++)
+        {
+            for(int j = i; j < S.Length; j++)
+            {
+                String temp = "";
+                temp += S.Substring(0, i);
+                temp += S.Substring(j, S.Length - j);
+                if(temp == "keyence")
+                {
+                    Console.WriteLine("YES");
+                    return;
+                }
+            }
+        }
+        Console.WriteLine("NO");
+    }
+    public static void ABC063_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var s = new int[N];
+        int sum = 0;
+        for(int i = 0; i < N; i++)
+        {
+            s[i] = int.Parse(Console.ReadLine());
+            sum += s[i];
+        }
+        if(sum % 10 != 0)
+        {
+            Console.WriteLine(sum);
+        }
+        else
+        {
+            int min = intMax;
+            for(int i = 0; i < N; i++)
+            {
+                if(s[i] % 10 != 0)
+                {
+                    min = Math.Min(min, s[i]);
+                }
+            }
+            if(min != intMax)
+            {
+                Console.WriteLine(sum - min);
+            }
+            else
+            {
+                Console.WriteLine(0);
+            }
+        }
+    }
+    public static void ABC222_A()
+    {
+        var N = Console.ReadLine().ToCharArray();
+        string temp = "";
+        while(N.Length != 4)
+        {
+            temp = "0" + new string(N);
+            N = temp.ToCharArray();
+        }
+        Console.WriteLine(new string(N));
+    }
+    public static void ABC222_B()
+    {
+        var NP = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int count = 0;
+        for(int i = 0; i < NP[0]; i++)
+        {
+            if(a[i] < NP[1])
+            {
+                count++;
+            }
+        }
+        Console.WriteLine(count);
+    }
+    public static void ABC222_C()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var a = new char[2 * NM[0]][];
+        var score = new (int, int)[2 * NM[0]];
+        for(int i = 0; i < 2 * NM[0]; i++)
+        {
+            score[i] = (i, 0);
+           a[i] = Console.ReadLine().ToCharArray();
+        }
+        for(int i = 0; i < NM[1]; i++)
+        {
+            for(int j = 0; j < 2 * NM[0]; j += 2)
+            {
+                if(a[score[j].Item1][i] == 'G' && a[score[j + 1].Item1][i] == 'P' || a[score[j].Item1][i] == 'P' && a[score[j + 1].Item1][i] == 'C' || a[score[j].Item1][i] == 'C' && a[score[j + 1].Item1][i] == 'G')
+                {
+                    score[j + 1].Item2++;
+                }
+                else if(a[score[j + 1].Item1][i] == 'G' && a[score[j].Item1][i] == 'P' || a[score[j + 1].Item1][i] == 'P' && a[score[j].Item1][i] == 'C' || a[score[j + 1].Item1][i] == 'C' && a[score[j].Item1][i] == 'G')
+                {
+                    score[j].Item2++;
+                }    
+            }
+            score = score.ToList().OrderByDescending(x => x.Item2).ThenBy(x => x.Item1).ToArray();
+        }
+        for(int i = 0; i < score.Length; i++)
+        {
+            Console.WriteLine(score[i].Item1 + 1);
+        }
+    }
+    public static void ABC222_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var b = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        
+        long mod = 998244353;
+        int max = Math.Max(a.Max(), b.Max());
+        var dp = new long[N  + 1,max + 1];
+        dp[0, 0] = 1;
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < max; j++)
+            {
+                //i番目jまでの累積和を計算しておく
+                dp[i,j + 1] += dp[i,j]; 
+            }
+            for(int j = a[i]; j <= b[i]; j++)
+            {
+                //上で累積和を計算しているのでこれを利用してO(1)でi+1のjを更新可能
+                dp[i + 1, j] += dp[i, j];
+                dp[i + 1, j] %= mod;
+            } 
+        }
+        long ans = 0;
+        for(int i = 0; i <= max; i++)
+        {
+            ans += dp[N, i];
+            ans %= mod;
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void ARC073_C()
+    {
+        var NT = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var t = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = 0;
+        for(int i = 0; i < t.Length - 1; i++)
+        {
+            ans += Math.Min(t[i + 1] - t[i], NT[1]);
+        }
+        ans += NT[1];
+        Console.WriteLine(ans);
+    }
+    public static void ABC088_C()
+    {
+        var grid = new int[3,3];
+        for(int i = 0; i < 3; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            
+            for(int j = 0; j < 3; j++)
+            {
+                grid[i, j] = read[j];
+            }
+        }
+        for(int i = 0; i <= 100; i++)
+        {
+            for(int j = 0; j <= 100; j++)
+            {
+                for(int k = 0; k <= 100; k++)
+                {
+                    var tempB = new int[]{grid[0,0] - i, grid[0, 1] - i, grid[0, 2] - i};
+                    bool ok = true;
+                    for(int l = 1; l < 3; l++)
+                    {
+                        if(l == 1 && (tempB[0] != grid[l,0] - j || tempB[1] != grid[l, 1] - j || tempB[2] != grid[l, 2] - j))
+                        {
+                            ok = false;
+                        }
+                        else if(l == 2 &&  (tempB[0] != grid[l,0] - k || tempB[1] != grid[l, 1] - k || tempB[2] != grid[l, 2] - k))
+                        {
+                            ok = false;
+                        }
+                    }
+                    if(ok)
+                    {
+                        Console.WriteLine("Yes");
+                        return;
+                    }
+                }
+            }
+        }
+        Console.WriteLine("No");
+    }
+    public static void AGC003_A()
+    {
+        var s = Console.ReadLine().ToCharArray();
+        int N = 0;
+        int S = 0;
+        int W = 0;
+        int E = 0;
+        for(int i = 0; i < s.Length; i++)
+        {
+            if(s[i] == 'N')
+            {
+                N++;
+            }
+            else if(s[i] == 'S')
+            {
+                S++;
+            }
+            else if(s[i] == 'W')
+            {
+                W++;
+            }
+            else if(s[i] == 'E')
+            {
+                E++;
+            }
+        }
+        if(N != 0 && S == 0 || N == 0 && S != 0 || E != 0 && W == 0 || E == 0 && W != 0)
+        {
+            Console.WriteLine("No");
+        }
+        else
+        {
+            Console.WriteLine("Yes");
+        }
+    }
     }
 }
