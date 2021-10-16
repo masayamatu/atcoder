@@ -4920,7 +4920,92 @@ namespace atcoder
         {
             Console.WriteLine("Yes");
         }
+    }
+    public static void diverta2019_B()
+    {
+        var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        long count = 0;
+        for(int i = 0; i <= read[3]/read[0]; i++)
+        {
+            for(int j = 0; j <= (read[3] - i * read[0])/read[1]; j++)
+            {
+                if((read[3] - i * read[0] - j * read[1]) % read[2] == 0)
+                {
+                    count++;
+                }
+            }
+        }
+        Console.WriteLine(count);
+    }
+    public static void ABC073_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = new Dictionary<long, int>();
+        for(int i = 0; i < N; i++)
+        {
+            var read = long.Parse(Console.ReadLine());
+            
+            if(A.ContainsKey(read))
+            {
+                A[read]++;
+            }
+            else
+            {
+                A.Add(read, 1);
+            }
+        }
+        var count = 0;
+        foreach(var a in A)
+        {
+            if(a.Value % 2 != 0)
+            {
+                count++;
+            }
+        }
+        Console.WriteLine(count);
         
+    }
+    public static void ABC159_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var list = new long[N + 1];
+        
+        for(int i = 0; i < N; i++)
+        {
+            list[A[i]]++;
+        }
+        long all = 0;
+        for(int i = 0; i <= N; i++)
+        {
+            if(list[i] > 0)
+                all += list[i] * (list[i] - 1) / 2;
+        }
+        for(int i = 0; i < N; i++)
+        {
+            long ans = 0;
+            if(A[i] > 0)
+                ans = all - (list[A[i]] - 1);
+            Console.WriteLine(ans);
+        }
+    }
+    public static void ABC053_B()
+    {
+        var s = Console.ReadLine().ToCharArray();
+        int indexA = intMax;
+        int indexZ = 0;
+        for(int i = 0; i < s.Length; i++)
+        {    
+            if(s[i] == 'A')
+            {
+                indexA = Math.Min(indexA, i);
+            }
+            else if (s[i] == 'Z')
+            {
+                indexZ = i;
+            }
+        }
+        Console.WriteLine(indexZ - (indexA - 1));
     }
     }
 }

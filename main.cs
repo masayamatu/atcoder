@@ -15,7 +15,7 @@ namespace atcoder
         const long longMax = 2000000000000000000;
         static void Main(string[] args)
         {
-            Solve.AGC003_A();
+            Solve.ABC053_B();
 
         }
     }
