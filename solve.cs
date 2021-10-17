@@ -5,6 +5,7 @@ using System.Numerics;
 using static CompLib.CompLib;
 using DataStructure;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace atcoder
 {
@@ -5006,6 +5007,111 @@ namespace atcoder
             }
         }
         Console.WriteLine(indexZ - (indexA - 1));
+    }
+    public static void ABC157_C()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var sc = new (int, int)[NM[1]];
+        var max = 0;
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            sc[i].Item1 = read[0];
+            sc[i].Item2 = read[1];
+            max = Math.Max(max, sc[i].Item1);
+        }
+        int ans = intMax;
+        for(int i = 0; i < 1000; i++)
+        {
+            bool ok = true;
+            var charI = Convert.ToString(i).ToCharArray();
+            if(charI.Length != NM[0])ok = false;
+            for(int j = 0; j < sc.Length; j++)
+            {
+
+                if(charI.Length >= sc[j].Item1  && sc[j].Item2 != (charI[sc[j].Item1 - 1] - '0'))
+                {
+                    ok = false;
+                }
+
+            }
+            if(ok) ans = Math.Min(ans, i);
+        }
+        if(ans == intMax) ans = -1;
+        Console.WriteLine(ans);
+    }
+    public static void AGC015_A()
+    {
+        var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = 0;
+        if(read[1] <= read[2] && (read[0] == 1 && read[1] == read[2]) && read[1] != 1)
+        {
+            ans = ((read[0] - 1) * read[2] + read[1]) - ((read[0] - 1) * read[1] + read[2]) + 1;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ARC128_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var v = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var ans = new StringBuilder();
+        bool gold = true;
+        for(int i = 0; i < N - 1; i++)
+        {
+            if(gold == true && v[i] > v[i + 1])
+            {
+                ans.Append("1 ");
+                gold = false;
+            }
+            else if(i >= 1 && gold == false && v[i] <= v[i + 1])
+            {
+                ans.Append("1 ");
+                gold = true;
+            }
+            else
+            {
+                ans.Append("0 ");
+            }
+        }
+        if(gold == false)
+        {
+            ans.Append("1");
+            Console.WriteLine(ans);
+        }
+        else
+        {
+            ans.Append("0");
+            Console.WriteLine(ans);
+        }
+    }
+    public static void ARC128_B()
+    {
+        int T = int.Parse(Console.ReadLine());
+        for(int i = 0; i < T; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            Array.Sort(read);
+            long count = longMax;
+            var ok = false;
+
+            if((read[1] - read[0]) % 3 == 0)
+            {
+                ok = true;
+                count = Math.Min(count, read[1]);
+            }
+            if((read[2] - read[0]) % 3 == 0 )
+            {
+                ok = true;
+                count = Math.Min(count, read[2]);
+            }
+            if((read[2] - read[1]) % 3 == 0)
+            {
+                ok = true;
+                count = Math.Min(count,read[2]);
+            }
+            if(ok)Console.WriteLine(count);
+            else Console.WriteLine(-1);
+        }
     }
     }
 }
