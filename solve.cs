@@ -5044,7 +5044,7 @@ namespace atcoder
     {
         var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
         long ans = 0;
-        if(read[1] <= read[2] && (read[0] == 1 && read[1] == read[2]) && read[1] != 1)
+        if((read[0] != 1 && read[1] <= read[2]) || (read[0] == 1 && read[1] == read[2]))
         {
             ans = ((read[0] - 1) * read[2] + read[1]) - ((read[0] - 1) * read[1] + read[2]) + 1;
         }
@@ -5112,6 +5112,117 @@ namespace atcoder
             if(ok)Console.WriteLine(count);
             else Console.WriteLine(-1);
         }
+    }
+    public static void ARC086_C()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var list = new Dictionary<int, int>();
+        for(int i = 0; i < NK[0]; i++)
+        {
+            if(list.ContainsKey(A[i]))
+            {
+                list[A[i]]++;
+            }
+            else
+            {
+                list.Add(A[i], 1);
+            }
+        }
+        list = list.OrderBy(x => x.Value).ToDictionary(key => key.Key, val => val.Value);
+        long ans = 0;
+        long now = list.Count();
+        if(now > NK[1])
+        {
+            foreach(var l in list)
+            {
+                ans += l.Value;
+                now--;
+                if(now == NK[1]) break;
+            }
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void ABC223_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = new int[N];
+        var B = new int[N];
+        double time = 0;
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            A[i] = read[0];
+            B[i] = read[1];
+            time += A[i] / (double)B[i];
+        }
+        time /= 2;
+        double burnA = 0;
+        double pretime = 0;
+        double burned = 0;
+        int index = 0;
+        while(burnA < time)
+        {
+            burnA += A[index]/(double)B[index];
+            if(index > 0) 
+            {
+                pretime += A[index - 1]/(double)B[index - 1];
+                burned += A[index - 1];
+            }
+            index++;
+        }
+        double ans = burned + (B[index - 1] * (time - pretime));
+        Console.WriteLine(ans);
+    }
+    public static void ABC123_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new List<(long, long)>();
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            list.Add((read[0], read[1]));
+        }
+        long left = 0;
+        long right = longMax;
+        var t = new long[N];
+        while(right - left > 1)
+        {
+            long mid = (right + left) / 2;
+            bool ok = true;
+            for(int i = 0; i < N; i++)
+            {
+                if(mid < list[i].Item1) ok = false;
+                else t[i] = (mid - list[i].Item1) / list[i].Item2;
+            }
+            Array.Sort(t);
+            for(int i = 0; i < N; i++)
+            {
+                if(t[i] < i) ok = false;
+            }
+            if(ok) right = mid;
+            else left = mid;
+        }
+        Console.WriteLine(right);
+
+
+    }
+    public static void ABC058_B()
+    {
+        var O = Console.ReadLine();
+        var E = Console.ReadLine();
+        String ans = "";
+        int index = 0;
+        while(index <= O.Length || index <= E.Length)
+        {
+            if(index < O.Length)
+                ans += O[index];
+            if (index < E.Length)
+                ans += E[index];
+            index++;
+        }
+        Console.WriteLine(ans);
     }
     }
 }
