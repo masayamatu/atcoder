@@ -5224,5 +5224,83 @@ namespace atcoder
         }
         Console.WriteLine(ans);
     }
+    public static void ABC148_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int now = 0;
+        for(int i = 0; i < N; i++)
+        {
+            if(a[i] == now + 1)
+            {
+                now++;
+            }
+        }
+        int ans = 0;
+        if(now != 0)
+            ans = N - now;
+        else ans = -1;
+        Console.WriteLine(ans);
+    }
+    public static void ABC223_D()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = new int[NM[1]];
+        var B = new int[NM[1]];
+        var graph = new List<List<int>>();
+        for(int i = 0; i < NM[0]; i++)
+        {
+            graph.Add(new List<int>());
+        }
+        var indeg = new int[NM[0]];
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            A[i] = read[0] - 1;
+            B[i] = read[1] - 1;
+            graph[A[i]].Add(B[i]);
+            indeg[B[i]]++;
+        }
+        var heap = new PriorityQueue<int>(NM[0], Comparer<int>.Create((x, y) => (y - x)));
+        for(int i = 0; i < NM[0]; i++)
+        {
+            if(indeg[i] == 0)
+            {
+                heap.Push(i);
+            }
+        }
+        var ans = new List<int>();
+        while(heap.Count != 0)
+        {
+            int i = heap.Pop();
+            ans.Add(i);
+            foreach(var l in graph[i])
+            {
+                indeg[l]--;
+                if(indeg[l] == 0)
+                {
+                    heap.Push(l);
+                }
+            }
+        }
+        if(ans.Count != NM[0])
+        {
+            Console.WriteLine(-1);
+        }
+        else
+        {
+            for(int i = 0; i < NM[0]; i++)
+            {
+                if(i == NM[0] - 1)
+                {
+                    Console.WriteLine(ans[i] + 1);
+                }
+                else
+                {
+                    Console.Write($"{ans[i] + 1} ");
+                }
+            }
+        }
+    }
     }
 }
