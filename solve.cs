@@ -5302,5 +5302,197 @@ namespace atcoder
             }
         }
     }
+    public static void AGC013_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        int count = 0;
+        if(N == 1)
+        {
+            Console.WriteLine(1);
+            return;
+        }
+        int index = 0;
+        while(index < N - 1)
+        {
+            int tempUp = index;
+            int tempDown = index;
+
+            while(tempUp != N - 1 && A[tempUp] <= A[tempUp + 1])
+            {
+                tempUp++;
+            }
+            while(tempDown != N - 1 && A[tempDown] >= A[tempDown + 1])
+            {
+                tempDown++;
+            }
+            count++;
+            index = Math.Max(tempDown, tempUp) + 1;
+        }
+        if(index < N)count++;
+        Console.WriteLine(count);
+    }
+    public static void AGC006_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var s = Console.ReadLine();
+        var t = Console.ReadLine();
+        int ans = s.Length + t.Length;
+        var temp = 0;
+        for(int i = 0; i < Math.Min(s.Length, t.Length); i++)
+        {
+            bool ok = true;
+            for(int j = 0; j <= i; j++)
+            {
+                if(s[s.Length - 1 - i + j] != t[j])
+                {
+                    ok = false;
+                }
+            }
+            if(ok) temp = Math.Max(temp, i + 1);
+        }
+        ans -= temp;
+        Console.WriteLine(ans);
+    }
+    public static void ABC154_D()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var p = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        double ans = 0;
+        var sum = new double[NK[0] + 1];
+        for(int i = 1; i <= NK[0]; i++)
+        {
+            sum[i] = sum[i - 1] + (((double)p[i - 1] + 1) * (p[i - 1])) / 2 / p[i - 1];   
+        }
+        for(int i = 0; i < NK[0] - (NK[1] - 1); i++)
+        {
+            double temp = sum[NK[1] + i] - sum[i];
+            ans = Math.Max(temp, ans);
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC082_B()
+    {
+        var s = Console.ReadLine().ToCharArray();
+        var t = Console.ReadLine().ToCharArray();
+        Array.Sort(s);
+        Array.Sort(t);
+        Array.Reverse(t);
+
+        bool ok = true;
+        bool equal = true;
+        for(int i = 0; i < Math.Min(s.Length, t.Length); i++)
+        {
+            if(((t[i] - 'a') - (s[i] - 'a')) < 0)
+            {
+                ok = false;
+                equal = false;
+                break;
+            }
+            else if(((t[i] - 'a') - (s[i] - 'a')) > 0)
+            {
+                equal = false;
+                break;
+            }
+        }
+        if(!ok)
+        {
+            Console.WriteLine("No");
+        }
+        else if(ok && equal && s.Length >= t.Length)
+        {
+            Console.WriteLine("No");
+        }
+        else
+        {
+            Console.WriteLine("Yes");
+        }
+    }
+    public static void ARC091_C()
+    {
+        var NM = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = 0;
+        if(NM[0] == 1 && NM[1] == 1)
+        {
+            ans = 1;
+        }
+        else if(NM[0] == 1)
+        {
+            ans = Math.Max(0, NM[1] - 2);
+        }
+        else if(NM[1] == 1)
+        {
+            ans = Math.Max(0, NM[0] - 2);
+        }
+        else
+        {
+            ans = Math.Max(0,NM[0] * NM[1] - ((NM[1] - 2) * 2 + NM[0] * 2));
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ARC080_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int not2 = 0;
+        int ok4 = 0;
+        for(int i = 0; i < N; i++)
+        {
+            if(a[i] % 2 != 0)
+            {
+                not2++;
+            }
+            else if(a[i] % 4 == 0)
+            {
+                ok4++;
+            }
+        }
+        if(ok4 >= not2)
+        {
+            Console.WriteLine("Yes");
+        }
+        else if(ok4 == (not2 - 1) && (ok4 + not2) == N)
+        {
+            Console.WriteLine("Yes");
+        }
+        else
+        {
+            Console.WriteLine("No");
+        }
+    }
+    public static void  ABC085_C()
+    {
+        var NY = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long max = NY[0] * 10000;
+        long dx = max - NY[1];
+        long count5 = 0;
+        long count1 = 0;
+        bool ok = false;
+        for(int i = 0; i <= dx / 5000; i++)
+        {
+            if((dx - 5000 * i) % 9000 == 0)
+            {
+                count1 = (dx - 5000 * i) / 9000;
+                count5 = i;
+                if(count1 + count5 <= NY[0])
+                {
+                    ok = true;
+                    break;
+                }
+            }
+        }
+        if(ok)
+        {
+            Console.WriteLine($"{NY[0] - count5 - count1} {count5} {count1}");
+        }
+        else if(dx == 0)
+        {
+            Console.WriteLine($"{NY[0]} 0 0");
+        }
+        else
+        {
+            Console.WriteLine("-1 -1 -1");
+        }
+    }
     }
 }
