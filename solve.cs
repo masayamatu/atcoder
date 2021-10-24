@@ -5494,5 +5494,196 @@ namespace atcoder
             Console.WriteLine("-1 -1 -1");
         }
     }
+    public static void ABC043_B()
+    {
+        var s = Console.ReadLine().ToCharArray();
+        var ans = new List<char>();
+        for(int i = 0; i < s.Length; i++)
+        {
+            if(s[i] != 'B')
+            {
+                ans.Add(s[i]);
+            }
+            else
+            {
+                if(ans.Count > 0)
+                ans.RemoveAt(ans.Count() - 1);
+            }
+        }
+        Console.WriteLine(new String(ans.ToArray()));
+    }
+    public static void ARC099_C()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int index = Array.IndexOf(A, 1);
+        int ans = 0;
+        ans += (NK[0] - 1)/(NK[1] - 1);
+        if((NK[0] - 1) % (NK[1] - 1) != 0)
+        {
+            ans++;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC224_A()
+    {
+        var S = Console.ReadLine();
+        var er = S.Substring(S.Length - 2, 2);
+        if(er == "er")
+        {
+            Console.WriteLine("er");
+        }
+        else
+        {
+            Console.WriteLine("ist");
+        }
+    }
+    public static void ABC224_B()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var fields = new long[HW[0], HW[1]];
+        bool ok = true;
+        for(int i = 0; i < HW[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            
+            for(int j = 0; j < HW[1]; j++)
+            {
+                fields[i,j] = read[j];
+            }
+        }
+        for(int i = 0; i < HW[0]; i++)
+        {
+            
+            for(int j = i + 1; j < HW[0]; j++)
+            {
+                for(int l = 0; l < HW[1]; l++)
+                {
+                    for(int m = l + 1; m < HW[1] ;m++ )
+                    {
+                        if(fields[i,l] + fields[j,m] > fields[j,l] + fields[i,m])
+                        {
+                            ok = false;
+                        }
+                    }
+                }
+                
+            }
+        }
+        if(ok)
+        {
+            Console.WriteLine("Yes");
+        }
+        else
+        {
+            Console.WriteLine("No");
+        }
+
+    }
+    public static void ABC224_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new (long, long)[N];
+        long ans = 0;
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            list[i] = (read[0], read[1]);
+        }
+        for(int i = 0; i < N - 2; i++)
+        {
+            for(int j = i + 1; j < N - 1; j++)
+            {
+                for(int k = j + 1; k < N; k++)
+                {
+                    long a = Math.Abs((list[j].Item1 - list[i].Item1) * (list[k].Item2 - list[i].Item2) - (list[j].Item2 - list[i].Item2) * (list[k].Item1 - list[i].Item1));
+                    if(a > 0)
+                    {
+                        ans++;
+                    }
+                }
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC224_D()
+    {
+        int M = int.Parse(Console.ReadLine());
+        var graph = new List<List<int>>();
+        for(int i = 0; i <= 9; i++)
+        {
+            graph.Add(new List<int>());
+        }
+        for(int i = 0; i < M; i++)
+        {
+            var　read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            graph[read[0]].Add(read[1]);
+            graph[read[1]].Add(read[0]);
+        }
+        var p = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var s = new char[]{'9','9','9','9','9','9','9','9','9'};
+        for(int i = 0; i < 8; i++)
+        {
+            s[p[i] - 1] = Convert.ToString(i + 1)[0];
+        }
+        String first = new string(s);
+        var q = new Queue<String>();
+        q.Enqueue(first);
+        var dic = new Dictionary<String, int>();
+        dic.Add(first,0);
+        while(q.Count > 0)
+        {
+            String temp = q.Dequeue();
+            int empI = -1;
+            for(int i = 1; i <= 9; i++)
+            {
+                if(temp[i - 1] == '9') empI = i;
+            }
+            foreach(var u in graph[empI])
+            {
+                var t = temp.ToCharArray();
+                t[empI - 1] = temp[u - 1];
+                t[u - 1] = '9';
+                String st = new string(t);
+                if(dic.ContainsKey(st))continue;
+                dic.Add(st, dic[temp] + 1);
+                q.Enqueue(st);
+            }
+        }
+        if(!dic.ContainsKey("123456789")) Console.WriteLine(-1);
+        else Console.WriteLine(dic["123456789"]);
+    }
+    public static void ABC109_C()
+    {
+        var NX = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var x = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        if(NX[0] == 1)
+        {
+            Console.WriteLine(Math.Abs(NX[1] - x[0]));
+            return;
+        }
+        long ans = gcd(Math.Abs(x[0] - NX[1]), Math.Abs(x[1] - NX[1]));
+        for(int i = 2; i < NX[0]; i++)
+        {
+            ans = gcd(ans, Math.Abs(x[i] - NX[1]));
+        }
+        Console.WriteLine(ans);
+        long gcd(long C, long D)
+        {
+            long tempC = C;
+            long tempD = D;
+
+            long r = tempD % tempC;
+            while(r != 0)
+            {
+                tempD = tempC;
+                tempC = r;
+                r = tempD % tempC;
+            }
+            //最小公倍数を返す
+            //var CD = (long)Math.Floor(((decimal)C * D) / tempC);
+            return tempC;
+        }
+    }
     }
 }
