@@ -6384,5 +6384,112 @@ namespace atcoder
         if(ok)Console.WriteLine("YES");
         else Console.WriteLine("NO");
     }
+    public static void ABC136_D()
+    {
+        var S = Console.ReadLine().ToCharArray();
+        var count = new int[S.Length];
+        int rCount = 0;
+        int lCount = 0;
+        for(int i = 0; i < S.Length; i++)
+        {
+            if(S[i] == 'R')
+            {
+                rCount++;
+            }
+            else if(rCount > 0 && S[i] == 'L')
+            {
+                int temp = 0;
+                while(i + temp < S.Length && S[i + temp] != 'R')
+                {
+                    lCount++;
+                    temp++;
+                }
+                count[i - 1] = (int)Math.Ceiling(rCount/(decimal)2) + lCount/2;
+                count[i] = rCount/2 + (int)Math.Ceiling(lCount/(decimal)2);
+                rCount = 0;
+                lCount = 0;
+            }
+        }
+        var sb = new  StringBuilder();
+        for(int i = 0; i < S.Length; i++)
+        {
+            if(i != S.Length - 1)
+            {
+                sb.Append($"{count[i]} ");
+            }
+            else
+            {
+                sb.Append(count[i]);
+            }
+        }
+        Console.WriteLine(sb);
+    }
+    public static void AGC043_A()
+    {
+        var HW = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var s = new char[HW[0]][];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            s[i] = Console.ReadLine().ToCharArray();
+        }
+        var dp = new int[HW[0], HW[1]];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                dp[i, j] = intMax;
+            }
+        }
+        if(s[0][0] == '#')
+        {
+            dp[0, 0] = 1;
+        }
+        else
+        {
+            dp[0, 0] = 0;
+        }
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                if(i == 0 && j == 0) continue;
+                int up = intMax;
+                int left = intMax;
+                if(i - 1 >= 0 && s[i - 1][j] == '.' && s[i][j] == '#')
+                {
+                    up = dp[i - 1, j]　+ 1;
+                }
+                else if(i - 1 >= 0)
+                {
+                    up = dp[i - 1, j];
+                }
+                if(j - 1 >= 0 && s[i][j - 1] == '.' && s[i][j] == '#')
+                {
+                    left = dp[i, j - 1]　+ 1;
+                }
+                else if ( j - 1 >= 0)
+                {
+                    left = dp[i, j - 1];
+                }
+                dp[i ,j] = Math.Min(up, left);
+            }
+        }
+        Console.WriteLine(dp[HW[0] - 1, HW[1] - 1]);
+    }
+    public static void ABC048_B()
+    {
+        var abx = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = 0;
+        if(abx[0] % abx[2] == 0)
+        {
+            ans = abx[1] / abx[2] - (abx[0] / abx[2] - 1);
+        }
+        else
+        {
+            ans = abx[1] / abx[2] - (abx[0] / abx[2]);
+        }
+        
+        Console.WriteLine(ans);
+    }
     }
 }

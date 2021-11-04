@@ -16,7 +16,7 @@ namespace atcoder
         const long longMax = 2000000000000000000;
         static void Main(string[] args)
         {
-            Solve.codefes2017final_B();
+            Solve.ABC048_B();
         }
     }
 }
