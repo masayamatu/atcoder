@@ -6491,5 +6491,179 @@ namespace atcoder
         
         Console.WriteLine(ans);
     }
+    public static void ABC141_D()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long sum = A.Sum();
+        var pqueue = new PriorityQueue<long>(NM[0]);
+        for(int i = 0; i < A.Length; i++)
+        {
+            pqueue.Push(A[i]);
+        }
+        for(int i = 1; i <= NM[1]; i++)
+        {
+            long temp = pqueue.Pop();
+            sum -= (temp - temp/2);
+            pqueue.Push(temp/2);
+        }
+        Console.WriteLine(sum);
+    }
+    public static void ABC076_C()
+    {
+        var S = Console.ReadLine().ToCharArray();
+        var T = Console.ReadLine().ToCharArray();
+        bool flag = false;
+        if(T.Length == 1 && S.Length == 1 && S[0] == T[0])
+        {
+            flag = true;
+        }
+        for(int i = S.Length - 1; i >= 0; i--)
+        {
+            
+            if(S[i] == '?' || S[i] == T[T.Length - 1])
+            {
+                int temp = 0;
+                while(S[i - temp] == T[T.Length - 1 - temp] || S[i - temp] == '?')
+                {
+                    if(temp == T.Length - 1)
+                    {
+                        for(int j = i - temp; j <= i - temp + T.Length - 1; j++)
+                        {
+                            S[j] = T[j - (i - temp)];
+                        }
+                        flag = true;
+                        break;
+                    }
+                    temp++;
+                    if(flag || i - temp < 0)break;
+                }
+            }
+            if(flag)break;
+        }
+        for(int i = 0; i < S.Length; i++)
+        {
+            if(S[i] == '?') S[i] = 'a';
+        }
+        if(flag)
+        Console.WriteLine(new String(S));
+        else Console.WriteLine("UNRESTORABLE");
+    }
+    public static void ABC103_B()
+    {
+        var S = Console.ReadLine().ToCharArray();
+        var T = Console.ReadLine().ToCharArray();
+        var flag = false;
+        if(new String(S) == new string(T))flag = true;
+        for(int i = 1; i <= S.Length; i++)
+        {
+            String temp = new String(S[(S.Length - i) .. (S.Length)]) + new String(S[0 .. (S.Length - i)]);
+            if(temp == new String(T))
+            {
+                flag = true;
+            }
+        }
+        if(flag)Console.WriteLine("Yes");
+        else Console.WriteLine("No");
+    }
+    public static void ABC226_A()
+    {
+        double X = double.Parse(Console.ReadLine());
+        int ans = (int)Math.Round(X,MidpointRounding.AwayFromZero);
+        Console.WriteLine(ans);
+    }
+    public static void ABC226_B()
+    {
+        var N = long.Parse(Console.ReadLine());
+        var dictionary = new Dictionary<String,int>();
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine();
+            if(!dictionary.ContainsKey(read))
+            {
+                dictionary.Add(read,1);
+            }
+        }
+        Console.WriteLine(dictionary.Count());
+    }
+    public static void ABC226_C()
+    {
+        var N = long.Parse(Console.ReadLine());
+        var graph = new List<List<long>>();
+        for(int i = 0; i < N; i++)
+        {
+            graph.Add(new List<long>());
+        }
+        var T = new long[N];
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            T[i] = read[0];
+            for(int j = 0; j < read[1]; j++)
+            {
+                graph[i].Add(read[2 + j] - 1);
+            }
+        }
+        var master = new bool[N];
+        long ans = 0;
+        dfs(N - 1);
+        Console.WriteLine(ans);
+        long dfs(long now)
+        {
+            master[now] = true;
+            foreach(var next in graph[(int)now])
+            {
+                if(master[next]) continue;
+                dfs(next);
+            }
+            ans += T[now];
+            return ans;
+        }
+    }
+    public static void typical90_006()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var S = Console.ReadLine();
+        var table = new int[S.Length, 26];
+        for(int i = 0; i < S.Length; i++)
+        {
+            for(int j = 0; j < 26; j++)
+            {
+                table[i, j] = S.Length;
+            }
+        }
+        for(int i = S.Length - 1; i >= 0; i--)
+        {
+            for(int j = 0; j < 26; j++)
+            {
+                if(S[i] - 'a' == j)
+                {
+                    table[i, j] = i;
+                }
+                else
+                {
+                    if(i < S.Length - 1)
+                    table[i, j] = table[i + 1, j];
+                }
+            }
+        }
+        var sb = new StringBuilder();
+        int now = 0;
+        for(int i = 0; i < NK[1]; i++)
+        {
+            for(int j = 0; j < 26; j++)
+            {
+                int next = table[now, j];
+                int max = S.Length - next - 1 + (i + 1);
+                if(max >= NK[1])
+                {
+                    sb.Append((char)('a' + j));
+                    now = next + 1;
+                    break;
+                }
+            }
+        }
+        Console.WriteLine(sb);
+    }
     }
 }
