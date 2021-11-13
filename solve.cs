@@ -6665,5 +6665,289 @@ namespace atcoder
         }
         Console.WriteLine(sb);
     }
+    public static void typical90_007()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        Array.Sort(A);
+        var Q = int.Parse(Console.ReadLine());
+        for(int i = 0; i < Q; i++)
+        {
+            long B = long.Parse(Console.ReadLine());
+            int l = 0;
+            int r = A.Length - 1;
+            while(r - l > 1)
+            {
+                int mid = (l + r) / 2;
+                if(A[mid] > B)
+                {
+                    r = mid;
+                }
+                else
+                {
+                    l = mid;
+                }
+            }
+            Console.WriteLine(Math.Min(Math.Abs(A[l] - B), Math.Abs(A[r] - B)));
+        }
+    }
+    public static void typical90_008()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var S = Console.ReadLine();
+        var dp = new long[S.Length + 1, 8];
+        long mod = 1000000007;
+        dp[0, 0] = 1;
+        for(int i = 0; i < S.Length; i++)
+        {
+            for(int j = 0; j <= 7; j++)
+            {
+                if(j != 7 && S[i] == "atcoder"[j])
+                {
+                    dp[i + 1, j + 1] += dp[i, j];
+                    dp[i + 1, j + 1] %= mod;
+                    dp[i + 1, j] += dp[i, j];
+                    dp[i + 1, j] %= mod;
+                }
+                else
+                {
+                    dp[i + 1, j] += dp[i, j];
+                    dp[i + 1, j] %= mod;
+                }
+            }
+        }
+        Console.WriteLine(dp[S.Length, 7]);
+    }
+    public static void typical90_010()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var one = new long[N + 1];
+        var two = new long[N + 1];
+        for(int i = 1; i <= N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            if(read[0] == 1)
+            {
+                one[i] = read[1];
+            }
+            else
+            {
+                two[i] = read[1];
+            }
+        }
+        for(int i = 0; i < N; i++)
+        {
+            one[i + 1] += one[i];
+        }
+        for(int i = 0; i < N; i++)
+        {
+            two[i + 1] += two[i];
+        }
+        int Q = int.Parse(Console.ReadLine());
+        for(int i = 0; i < Q; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            long sumOne = one[read[1]] - one[read[0] - 1];
+            long sumTwo = two[read[1]] - two[read[0] - 1];
+            Console.WriteLine($"{sumOne} {sumTwo}");
+        }
+
+    }
+    public static void ABC050_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var T = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long sum = T.Sum();
+        int M = int.Parse(Console.ReadLine());
+        for(int i = 0; i < M; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            long ans = sum;
+            ans += read[1] - T[read[0] - 1];
+            Console.WriteLine(ans);
+        }
+    }
+    public static void ABC127_D()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var list = new (int, long)[NM[1]];
+        long sumA = A.Sum();
+        Array.Sort(A);
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            list[i] = (((int)read[0], read[1]));
+        }
+        list = list.OrderByDescending(x => x.Item2).ToArray();
+        long start = 0;
+        for(int i = 0; i < NM[1]; i++)
+        {
+            for(int j = 0; j < list[i].Item1; j++)
+            {
+                if(j + start > NM[0] - 1)
+                {
+                    break;
+                }
+                if(list[i].Item2 - A[j + start] > 0)
+                {
+                    sumA += list[i].Item2 - A[j + start];
+                } 
+            }
+            start += list[i].Item1;
+        }
+        Console.WriteLine(sumA);
+    }
+    public static void ABC226_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var point = new (long, long)[N];
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            point[i] = (read[0], read[1]);
+        }
+        var set = new HashSet<(long, long)>();
+        for(int i = 0; i < N - 1; i++)
+        {
+            for(int j = i + 1; j < N; j++)
+            {
+                var dx = point[i].Item1 - point[j].Item1;
+                var dy = point[i].Item2 - point[j].Item2;
+                if(dx == 0)
+                {
+                    set.Add((0, 1));
+                }
+                else if(dy == 0)
+                {
+                    set.Add((1, 0));
+                }
+                else
+                {
+                    var g = gcd(dx, dy);
+                    set.Add((dx/g, dy/g));
+                }
+                
+            }
+        }
+        long ans = 0;
+        ans = set.Count() * 2;
+        Console.WriteLine(ans);
+
+        long gcd(long C, long D)
+        {
+            long tempC = C;
+            long tempD = D;
+
+            long r = tempD % tempC;
+            while(r != 0)
+            {
+                tempD = tempC;
+                tempC = r;
+                r = tempD % tempC;
+            }
+            //最小公倍数を返す
+            //var CD = (long)Math.Floor(((decimal)C * D) / tempC);
+            return tempC;
+        }
+    }
+    public static void typical90_012_sub()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int Q = int.Parse(Console.ReadLine());
+        var field = new int[HW[0], HW[1]];
+        for(int i = 0; i < Q; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            if(read[0] == 1)
+            {
+                field[read[1] - 1, read[2] - 1] = 1;
+            }
+            else
+            {
+                var visit = new int[HW[0], HW[1]];
+                dfs(read[1] - 1, read[2] - 1, visit, (read[3] - 1, read[4] - 1));
+                if(visit[read[3] - 1, read[4] - 1] == 1 && field[read[3] - 1, read[4] - 1] == 1)
+                {
+                    Console.WriteLine("Yes");
+                }
+                else
+                {
+                    Console.WriteLine("No");
+                }
+            }
+        }
+        void dfs(int y, int x, int[,] visit, (int, int) goal)
+        {
+            if(field[y, x] == 0)
+            {
+                return;
+            }
+            visit[y, x] = 1;
+            if(y == goal.Item1 && x == goal.Item2 && field[goal.Item1, goal.Item2] == 1)
+            {
+                return;
+            }
+            var move = new (int, int)[]{(-1,0),(0,-1),(1,0),(0,1)};
+            foreach(var d in move)
+            {
+                if(y + d.Item1 >= 0 && y + d.Item1 < HW[0] && x + d.Item2 >= 0 && x + d.Item2 < HW[1])
+                {
+                    if(visit[y + d.Item1, x + d.Item2] == 0)
+                    {
+                        dfs(y +  d.Item1, x + d.Item2, visit, goal);
+                    }
+                }
+            }
+        }
+    }
+    public static void typical90_012()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int Q = int.Parse(Console.ReadLine());
+        var uf = new UnionFind<(int, int)>();
+        var field = new int[HW[0], HW[1]];
+        for(int i = 0; i < Q; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            if(read[0] == 1)
+            {
+                if(!uf.Contains((read[1] - 1, read[2] - 1)))
+                {
+                    uf.Add((read[1] - 1, read[2] - 1));
+                }
+                field[read[1] - 1, read[2] - 1] = 1;
+                var move = new (int ,int)[]{(-1,0),(0,-1),(1,0),(0,1)};
+                foreach(var d in move)
+                {
+                    if(read[1] - 1 + d.Item1 >= 0 && read[1] - 1 + d.Item1 < HW[0] &&  read[2] - 1 + d.Item2 >= 0 && read[2] - 1 + d.Item2 < HW[1])
+                    {
+                        if(field[read[1] - 1 + d.Item1, read[2] - 1 + d.Item2] == 1)
+                        {
+                            uf.Unite((read[1] - 1, read[2] - 1), (read[1] - 1 + d.Item1, read[2] - 1 + d.Item2));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if(uf.Contains((read[1] - 1, read[2] - 1)) && uf.Contains((read[3] - 1, read[4] - 1)))
+                {
+                    if(uf.IsSame((read[1] - 1, read[2] - 1), (read[3] - 1, read[4] - 1)))
+                    {
+                        Console.WriteLine("Yes");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No");
+                }
+            }
+        }
+    }
     }
 }
