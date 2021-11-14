@@ -6949,5 +6949,231 @@ namespace atcoder
             }
         }
     }
+    public static void typical90_013()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var graph = new  Dijkstra(NM[0] + 1);
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            graph.Add(read[0], read[1], read[2]);
+            graph.Add(read[1], read[0], read[2]);
+        }
+        var d = graph.GetMinCost(1);
+        var n = graph.GetMinCost(NM[0]);
+        for(int i = 1; i <= NM[0]; i++)
+        {
+            var temp = d[i] + n[i];
+            Console.WriteLine(temp);
+        }
+    }
+    public static void typical90_014()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var B = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        Array.Sort(A);
+        Array.Sort(B);
+        long ans = 0;
+        for(int i = 0; i < N; i++)
+        {
+            ans += Math.Abs(A[i] - B[i]);
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical90_016()
+    {
+        var N = int.Parse(Console.ReadLine());
+        var ABC = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        Array.Sort(ABC);
+        long temp = 0;
+        long ans = intMax;
+        for(int i = 0; i < 9999; i++)
+        {
+            for(int j = 0; j < 9999; j++)
+            {
+                temp = ABC[2] * i + ABC[1] * j;
+                if(temp > N)continue;
+                if((N - temp) % ABC[0] == 0)
+                {
+                    ans = Math.Min(ans, i + j + (N - temp) / ABC[0]);
+                }
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC227_A()
+    {
+        var NKA = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int temp = NKA[1];
+        int now = NKA[2] - 1;
+        int ans = 0;
+        while(temp > 0)
+        {
+            now++;
+            temp--;
+            if(now > NKA[0])now = 1;
+            if(temp == 0) ans = now;
+        }
+        
+        Console.WriteLine(ans);
+    }
+    public static void ABC227_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var S = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var check = new int[N];
+        for(int i = 1; i < 1000; i++)
+        {
+            for(int j = 1; j < 1000; j++)
+            {
+                for(int k = 0; k < N; k++)
+                {
+                    if(4 * i * j + 3 * i + 3 * j == S[k])
+                    {
+                        check[k] = 1;
+                    }
+                }
+            }
+        }
+        int ans = N - check.Sum();
+        Console.WriteLine(ans);
+    }
+    public static void ABC227_C()
+    {
+        long N = long.Parse(Console.ReadLine());
+        long count = 0;
+        for(int i = 1; i <= Math.Sqrt(N); i++)
+        {
+            for(int j = i; j <= Math.Sqrt(N / i); j++)
+            {
+                    long k = N/(i * j);
+                    count += k;
+                    count -= Math.Min((j - 1),k);
+                
+            }
+        }
+        Console.WriteLine(count);
+    }
+    public static void ABC227_D()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        Array.Sort(A);
+        var ans = A.Sum() / NK[1];
+        long temp = 0;
+        for(int i = 0; i < NK[0]; i++)
+        {
+            if( i <= NK[0] - NK[1])
+            {
+                temp += A[i];
+            }
+            else if(A[i] < ans)
+            {
+                temp = A[i];
+            }
+            
+        }
+        ans -= Math.Max(ans - temp, 0);
+        Console.WriteLine(ans);
+    }
+    public static void typical90_018()
+    {
+        long T = long.Parse(Console.ReadLine());
+        var LXY = Console.ReadLine().Split().Select(double.Parse).ToArray();
+        var Q = int.Parse(Console.ReadLine());
+        for(int i = 0; i < Q; i++)
+        {
+            double E = double.Parse(Console.ReadLine());
+            double angle = Math.PI * 360 * (E / T) / 180.0;
+            (double, double, double) point = (0, -LXY[0]/2 * Math.Sin(angle), LXY[0] / 2 - (LXY[0] / 2) * Math.Cos(angle));
+            double hd = Math.Sqrt(Math.Pow(LXY[1], 2) + Math.Pow(point.Item2 - LXY[2], 2));
+            double ans = 180 * Math.Atan2(point.Item3, hd) / Math.PI;
+            Console.WriteLine(ans);
+        }
+    }
+    public static void typical90_020()
+    {
+        var abc = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        if(abc[0] < pow(abc[2], (int)abc[1]))
+        {
+            Console.WriteLine("Yes");
+        }
+        else
+        {
+            Console.WriteLine("No");
+        }
+        long pow(long x, int n)
+        {
+            long ret = 1;
+            while(n > 0)
+            {
+                if((n & 1) > 0) ret *= x;
+                x *= x;
+                n = n >> 1;
+            }
+            return ret;
+        }
+    }
+    public static void typical90_021()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var G = new List<List<int>>();
+        var H = new List<List<int>>();
+        var I = new List<int>();
+        long count = 0;
+        for(int i = 0; i < NM[0]; i++)
+        {
+            G.Add(new List<int>());
+            H.Add(new List<int>());
+        }
+        var visit = new int[NM[0]];
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            G[read[0] - 1].Add(read[1] - 1);
+            H[read[1] - 1].Add(read[0] - 1);
+        }
+        for(int i = 0; i < NM[0]; i++)
+        {
+            if(visit[i] == 0)
+            {
+                dfs(i);
+            }
+        }
+        I.Reverse();
+        for(int i = 0; i < NM[0]; i++)
+        {
+            visit[i] = 0;
+        }
+        long ans = 0;
+        foreach(var i in I)
+        {
+            if(visit[i] == 1) continue;
+            count = 0;
+            dfs2(i);
+            ans += count * (count - 1) / 2;
+        }
+        Console.WriteLine(ans);
+        void dfs(int now)
+        {
+            visit[now] = 1;
+            foreach(var i in G[now])
+            {
+                if(visit[i] == 0) dfs(i);
+            }
+            I.Add(now);
+        }
+        void dfs2(int now)
+        {
+            visit[now] = 1;
+            count++;
+            foreach(var i in H[now])
+            {
+                if(visit[i] == 0)dfs2(i);
+            }
+
+        }
+    }
     }
 }
