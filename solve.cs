@@ -6949,7 +6949,7 @@ namespace atcoder
             }
         }
     }
-    public static void typical90_013()
+      public static void typical90_013()
     {
         var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
         var graph = new  Dijkstra(NM[0] + 1);
@@ -7174,6 +7174,26 @@ namespace atcoder
             }
 
         }
+    }
+    public static void kyoto2021_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var S = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long T = long.Parse(Console.ReadLine());
+        Array.Sort(S);
+        long ans = 1;
+        long temp = 0;
+        long index = 0;
+        while(index < N)
+        {
+            if(index > 0 && S[index]/T > temp)
+            {
+                ans++;
+            }
+            temp = S[index]/T;
+            index++;
+        }
+        Console.WriteLine(ans);
     }
     }
 }
