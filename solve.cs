@@ -7115,6 +7115,9 @@ namespace atcoder
             return ret;
         }
     }
+    /// <summary>
+    /// 強連結成分分解
+    /// </summary>
     public static void typical90_021()
     {
         var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
@@ -7194,6 +7197,144 @@ namespace atcoder
             index++;
         }
         Console.WriteLine(ans);
+    }
+    public static void kyoto2021_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var field = new bool[N][];
+        for(int i = 0; i < N; i++)
+        {
+            field[i] = new bool[N];
+        }
+        for(int i = 0, j = N - 1; i < N - 1; i += 2, j -= 2)
+        {
+            for(int k = 0; k < j; k++)
+            {
+                field[i][k] = true;
+                field[i + k][j - 1] = true;
+            }
+            
+        }
+        foreach(var a in field)
+        {
+            Console.WriteLine(new string(a.Select(x => x ? '#' : '.').ToArray()));
+        }
+
+    }
+    public static void typical90_022()
+    {
+        var ABC = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long temp = gcd(ABC[0], ABC[1]);
+        temp = gcd(temp, ABC[2]);
+        long ans = ABC[0]/temp - 1 + ABC[1]/temp - 1 + ABC[2]/temp - 1;
+        Console.WriteLine(ans);
+
+        long gcd(long C, long D)
+        {
+            long tempC = C;
+            long tempD = D;
+
+            long r = tempD % tempC;
+            while(r != 0)
+            {
+                tempD = tempC;
+                tempC = r;
+                r = tempD % tempC;
+            }
+            //最小公倍数を返す
+            //var CD = (long)Math.Floor(((decimal)C * D) / tempC);
+            return tempC;
+        }
+    }
+    public static void typical90_024()
+    {
+        var NK = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var B = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long minus = 0;
+        long plus = 0;
+        var ok = false;
+        for(int i = 0; i < NK[0]; i++)
+        {
+            if(A[i] > B[i])
+            {
+                minus += A[i] - B[i];
+            }
+            else
+            {
+                plus += B[i] - A[i];
+            }
+        }
+        if(NK[1] >= plus + minus && (NK[1] - plus - minus) % 2 == 0)
+        {
+            ok = true;
+        }
+        if(ok) Console.WriteLine("Yes");
+        else Console.WriteLine("No");
+    }
+    public static void typical90_026()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var graph = new List<List<int>>();
+        for(int i = 0; i < N; i++)
+        {
+            graph.Add(new List<int>());
+        }
+        for(int i = 0; i < N - 1; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            graph[read[0] - 1].Add(read[1] - 1);
+            graph[read[1] - 1].Add(read[0] - 1);
+        }
+        var flag = new int[N];
+        var visit = new int[N];
+        dfs(0, 1);
+        void dfs(int now, int num)
+        {
+            flag[now] = num;
+            visit[now] = 1;
+            foreach(var i in graph[now])
+            {
+                if(num == 1 && visit[i] == 0)
+                {
+                    dfs(i, 0);
+                }
+                else if (num == 0 && visit[i] == 0)
+                {
+                    dfs(i, 1);
+                }
+            }
+        }
+        var list1 = new List<int>();
+        var list2 = new List<int>();
+        for(int i = 0; i < N; i++)
+        { 
+            if(flag[i] == 1)
+            {
+                list1.Add(i + 1);
+            }
+            else
+            {
+                list2.Add(i + 1);
+            }
+            
+        }
+        var sb = new StringBuilder();
+        if(list1.Count() > list2.Count())
+        {
+            for(int i = 0; i < N / 2; i++)
+            {
+                sb.Append($"{list1[i]} ");
+            }
+        }
+        else
+        {
+            for(int i = 0; i < N / 2; i++)
+            {
+                sb.Append($"{list2[i]} ");
+            }
+        }
+        Console.WriteLine(sb.ToString().TrimEnd());
     }
     }
 }
