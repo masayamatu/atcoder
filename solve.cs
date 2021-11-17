@@ -7336,5 +7336,65 @@ namespace atcoder
         }
         Console.WriteLine(sb.ToString().TrimEnd());
     }
+    public static void typical90_027()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new List<String>();
+        var num = new List<int>();
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine();
+            if(!list.Contains(read))
+            {
+                num.Add(i + 1);
+                list.Add(read);
+            }
+        }
+
+        foreach(var i in num)
+        {
+            Console.WriteLine(i);
+        }
+    }
+    public static void typical90_028()
+    {
+        var N = int.Parse(Console.ReadLine());
+        var list = new (int,int,int,int)[N];
+        var field = new int[1001, 1001];
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            field[read[1], read[0]]++;
+            field[read[3], read[0]]--;
+            field[read[1], read[2]]--;
+            field[read[3], read[2]]++;
+        }
+        for(int i = 0; i < 1001; i++)
+        {
+            for(int j = 1; j < 1001; j++)
+            {
+                field[i, j] += field[i, j - 1];
+            }
+        }
+        for(int i = 1; i < 1001; i++)
+        {
+            for(int j = 0; j < 1001; j++)
+            {
+                field[i, j] += field[i - 1, j];
+            }
+        }
+        var ans = new int[N + 1];
+        for(int i = 0; i < 1001; i++)
+        {
+            for(int j = 0; j < 1001; j++)
+            {
+                ans[field[i, j]]++;
+            }
+        }
+        for(int i = 1; i <= N; i++)
+        {
+            Console.WriteLine(ans[i]);
+        }
+    }
     }
 }
