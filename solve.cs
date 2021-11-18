@@ -7396,5 +7396,17 @@ namespace atcoder
             Console.WriteLine(ans[i]);
         }
     }
+    public static void typical90_029()
+    {
+        var WN = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var seg = new LazySegmentTree(WN[0]);
+        for(int i = 0; i < WN[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            int height = seg.RangeMax(read[0] - 1, read[1]) + 1;
+            seg.Update(read[0] - 1, read[1], height);
+            Console.WriteLine(height);
+        }
+    }
     }
 }
