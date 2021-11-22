@@ -7408,5 +7408,72 @@ namespace atcoder
             Console.WriteLine(height);
         }
     }
+    public static void ABC228_C()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var list = new List<(int, int)>();
+        for(int i = 0; i < NK[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            list.Add((i, read[0] + read[1] + read[2]));
+        }
+        list = list.OrderBy(x => x.Item2).ToList();
+        int border = list[NK[0] - NK[1]].Item2;
+        var indexlist = new int[NK[0]];
+        for(int i = 0; i < NK[0]; i++)
+        {
+            indexlist[list[i].Item1] = i;
+        }
+        for(int i = 0; i < NK[0]; i++)
+        {
+            int index = indexlist[i];
+            if(index >= NK[0] - NK[1])
+            {
+                Console.WriteLine("Yes");
+            }
+            else if(list[index].Item2 + 300 >= border)
+            {
+                Console.WriteLine("Yes");
+            }
+            else
+            {
+                Console.WriteLine("No");
+            }
+        }
+
+    }
+    public static void ABC228_D()
+    {
+        int Q = int.Parse(Console.ReadLine());
+        int N =(int)Math.Pow(2, 20) + 1;
+        var a = new long[N];
+        Array.Fill(a, -1);
+        var set = new Set<int>();
+        
+        for(int i = 0; i < N; i++)
+        {
+            set.Add(i);
+        }
+
+        for(int i = 0; i < Q; i++)
+        {
+            var tx = Console.ReadLine().Split().Select(long.Parse).ToArray();
+
+            if(tx[0] == 1)
+            {
+                int h = (int)(tx[1] % N);
+                int temp = set.LowerBound(h);
+                if(temp >= set.Count) temp = 0;
+                int index = set[temp];
+                a[index] = tx[1];
+                set.RemoveAt(temp);
+
+            }
+            else
+            {
+                Console.WriteLine(a[tx[1] % N]);
+            }
+        }
+    }
     }
 }
