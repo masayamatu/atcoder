@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Numerics;
-using static CompLib.CompLib;
 using DataStructure;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -321,7 +320,7 @@ namespace atcoder
                 var read = Console.ReadLine().Split();
                 point[i] = Tuple.Create(int.Parse(read[0]), int.Parse(read[1]));
             }
-            var allpattern = next_permutation(Enumerable.Range(1,N)).ToArray();
+            var allpattern = CompLib.next_permutation(Enumerable.Range(1,N)).ToArray();
             for(int i = 0; i < allpattern.Length; i++)
             {
                 for(int j = 0; j < N - 1; j++)
@@ -337,7 +336,7 @@ namespace atcoder
             int N = int.Parse(Console.ReadLine());
             String[] a = Console.ReadLine().Split();
             String[] b = Console.ReadLine().Split();
-            var allpattern = next_permutation(Enumerable.Range(1, N)).ToArray();
+            var allpattern = CompLib.next_permutation(Enumerable.Range(1, N)).ToArray();
             int countA = 0;
             int countB = 0;
             int count= 0;
@@ -385,7 +384,7 @@ namespace atcoder
                 edge[int.Parse(query[0]) - 1][int.Parse(query[1]) - 1] = true;
                 edge[int.Parse(query[1]) - 1][int.Parse(query[0]) - 1] = true;
             }
-            var allpattern = next_permutation(Enumerable.Range(1, N)).ToArray();
+            var allpattern = CompLib.next_permutation(Enumerable.Range(1, N)).ToArray();
             for(int i = 0; i < allpattern.Length; i++)
             {
                 if(allpattern[i][0] != 1)
@@ -7475,5 +7474,502 @@ namespace atcoder
             }
         }
     }
+    public static void typical90_030()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        long ans = 0;
+        var cnt = new int[1 << 24];
+        for(int i = 2; i <= NK[0]; i++)
+        {
+            if(cnt[i] >= 1) continue;
+            for(int j = i; j <= NK[0]; j += i)
+            {
+                cnt[j]++;
+            }
+        }
+        for(int i = 0; i <= NK[0]; i++)
+        {
+            if(cnt[i] >= NK[1]) ans++;
+        }
+        Console.WriteLine(ans);
     }
+    public static  void typical90_031()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var W = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var B = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var grundy = new int[55, 1555];
+        init();
+        int xor = 0;
+        for(int i = 0; i < N; i++)
+        {
+            if(i == N){
+                i += 0;
+            }
+            xor ^= grundy[W[i], B[i]];
+        }
+        if(xor != 0)Console.WriteLine("First");
+        else Console.WriteLine("Second");
+        void init()
+        {
+            for(int i = 0; i <= 50; i++)
+            {
+                for(int j = 0; j <= 1500; j++)
+                {
+                    var mex = new int[1555];
+                    if(i >= 1)
+                    {
+                        mex[grundy[i - 1, j + i]] = 1;
+                    }
+                    if(j >= 2)
+                    {
+                         for(int k = 1; k <= (j / 2); k++)
+                         {
+                             mex[grundy[i, j - k]] = 1;
+                         }
+                    }
+                    for(int k = 0; k < 1555; k++)
+                    {
+                        if(mex[k] == 0)
+                        {
+                            grundy[i, j] = k;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public static void typical90_019()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var dp = Enumerable.Range(0, 2 * N).Select(y => (new long[2 * N]).Select(x => longMax).ToArray()).ToArray();
+        for(int i = 0; i < 2 * N - 1; i++)
+        {
+            dp[i][i + 1] = Math.Abs(A[i] - A[i + 1]);
+        }
+        for(int i = 3; i < 2 * N; i += 2)
+        {
+            for(int j = 0; j < 2 * N - i; j++)
+            {
+                int l = j, r = j + i;
+                for(int k = l; k <= r - 1; k++)
+                {
+                    dp[l][r] = Math.Min(dp[l][r], dp[l][k] + dp[k + 1][r]);
+                }
+                dp[l][r] = Math.Min(dp[l][r], dp[l + 1][r - 1] + Math.Abs(A[l] - A[r]));
+            }
+        }
+        Console.WriteLine(dp[0][2 * N - 1]);
+    }
+    public static void ABC094_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var X = Console.ReadLine().Split().Select(int.Parse).ToList();
+
+        int m = N / 2;
+        var sortedX = X.OrderBy(x => x).ToList();
+        for(int i = 0; i < N; i++)
+        {
+            if(X[i] < sortedX[m])
+            {
+                Console.WriteLine(sortedX[m]);
+            }
+            else
+            {
+                Console.WriteLine(sortedX[m - 1]);
+            }
+        }
+    }
+    public static void typical90_032()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = new int[N][];
+        for(int i = 0; i < N; i++)
+        {
+            A[i] = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        }
+        int M = int.Parse(Console.ReadLine());
+        var check = new int[N,N];
+        for(int i = 0; i < M; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            check[read[0] - 1, read[1] - 1] = 1;
+            check[read[1] - 1, read[0] - 1] = 1;
+        }
+        int ans = intMax;
+        var p = Enumerable.Range(0, N).ToArray();
+        do
+        {
+            var ok = true;
+            int temp = 0;
+            for(int i = 0; i < N - 1; i++)
+            {
+                if(check[p[i],p[i + 1]] == 1)
+                {
+                    ok = false;
+                }
+                temp += A[p[i]][i];
+            }
+            temp += A[p[N - 1]][N - 1];
+            if(ok) ans = Math.Min(ans, temp);
+        }while(NextPermutation.Next_Permutation(p));
+        if(ans == intMax) Console.WriteLine(-1);
+        else Console.WriteLine(ans);
+    }
+    public static void typical90_033()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int ans = 0;
+        if(HW[0] == 1 || HW[1] == 1)ans = HW[0] * HW[1];
+        else ans = (int)Math.Ceiling((decimal)HW[0] / 2) * (int)Math.Ceiling((decimal)HW[1] / 2);
+        Console.WriteLine(ans);
+    }
+    public static void typical90_055()
+    {
+        var NPQ = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = 0;
+        for(int i = 0; i < NPQ[0]; i++)
+        {
+            for(int j = 0; j < i; j++)
+            {
+                for(int k = 0; k < j; k++)
+                {
+                    for(int l = 0; l < k; l++)
+                    {
+                        for(int m = 0; m < l; m++)
+                        {
+                            if(A[i] * A[j] % NPQ[1] * A[k] % NPQ[1] * A[l] % NPQ[1] * A[m] % NPQ[1] == NPQ[2])ans++;
+                        }
+                    }
+                }
+            }
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void typical90_034()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var a = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var list = new Dictionary<long, int>();
+        int index = 0, cnt = 0;
+        int ans = 0;
+        for(int i = 0; i < NK[0]; i++)
+        {
+            while(index < NK[0])
+            {
+                if(!list.ContainsKey(a[index]) && cnt == NK[1]) break;
+                if(!list.ContainsKey(a[index]))
+                {
+                    cnt++;
+                    list.Add(a[index], 1);
+                }
+                else
+                {
+                    list[a[index]]++;
+                }
+                index++;
+            }
+            ans = Math.Max(ans, index - i);
+            if(index == NK[0]) break;
+            if(list[a[i]] == 1)
+            {
+                cnt--;
+                list.Remove(a[i]);
+            }
+            else
+            {
+                list[a[i]]--;
+            }
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void typical90_038()
+    {
+        var AB = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = gcd(AB[0], AB[1]);
+        if(ans != -1)
+            Console.WriteLine(ans);
+        else
+        {
+            Console.WriteLine("Large");
+        }
+        long gcd(long C, long D)
+        {
+            long tempC = C;
+            long tempD = D;
+
+            long r = tempD % tempC;
+            while(r != 0)
+            {
+                tempD = tempC;
+                tempC = r;
+                r = tempD % tempC;
+            }
+            long CD = 0;
+            if(D/tempC <= (long)1000000000000000000 / C)
+            {
+                CD = C / tempC;
+                CD *= D;
+            }
+            else
+            {
+                CD = -1;
+            }
+                
+            return CD;
+        }
+    }
+    public static void typical90_036()
+    {
+        var NQ = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var point = new (long, long)[NQ[0]];
+        for(int i = 0; i < NQ[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            
+            point[i] = (read[0], read[1]);
+        }
+        long minX = longMax;
+        long minY = longMax;
+        long maxX = 0;
+        long maxY = 0;
+        for(int i = 0; i < NQ[0]; i++)
+        {
+            var tempX = point[i].Item1 + point[i].Item2;
+            var tempY = point[i].Item2 - point[i].Item1;
+            point[i].Item1 = tempX;
+            point[i].Item2 = tempY;
+            minX = Math.Min(minX, point[i].Item1);
+            minY = Math.Min(minY, point[i].Item2);
+            maxX = Math.Max(maxX, point[i].Item1);
+            maxY = Math.Max(maxY, point[i].Item2);
+            
+        }
+        for(int i = 0; i < NQ[1]; i++)
+        {
+            int q = int.Parse(Console.ReadLine());
+            long temp1 = Math.Abs(point[q - 1].Item1 - minX);
+            long temp2 = Math.Abs(point[q - 1].Item1 - maxX);
+            long temp3 = Math.Abs(point[q - 1].Item2 - maxY);
+            long temp4 = Math.Abs(point[q - 1].Item2 - minY);
+            long ans = Math.Max(temp1,Math.Max(temp2,Math.Max(temp3,temp4)));
+            Console.WriteLine(ans);
+        }
+    }
+    /// <summary>
+    /// セグメント木dp
+    /// </summary>
+    public static void typical90_037()
+    {
+        var WN = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var spice = new (long, long, long)[WN[1]];
+        var dp = new long[505, 10005];
+        var seg = new SegmentTree<long>[505];
+        for(int i = 0; i < WN[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            spice[i] = (read[0], read[1], read[2]);
+        }
+        for(int i = 0; i <= WN[1]; i++)
+        {
+            for(int j = 0; j < dp.GetLength(1); j++)
+            {
+                dp[i, j] = -1;
+            }   
+            seg[i] = new SegmentTree<long>(Enumerable.Repeat((long)-1, WN[0]), (x, y) => Math.Max(x, y), -1);
+        }
+        dp[0, 0] = 0;
+        seg[0].Update(0,0);
+        for(int i = 1; i <= WN[1]; i++)
+        {
+            for(int j = 0; j <= WN[0]; j++)
+            {
+                dp[i, j] = dp[i - 1, j];
+            }
+            for(int j = 0; j <= WN[0]; j++)
+            {
+                int l = Math.Max(0, j - (int)spice[i - 1].Item2), r = Math.Max(0, j - (int)spice[i - 1].Item1 + 1);
+                if(l == r) continue;
+                long val = seg[i - 1].Execute(l, r);
+                if(val != -1)
+                {
+                    dp[i, j] = Math.Max(dp[i, j], val + spice[i - 1].Item3);
+                }
+            }
+            for(int j = 0; j <= WN[0]; j++)
+            {
+                seg[i].Update(j, dp[i, j]);
+            } 
+        }
+        Console.WriteLine(dp[WN[1], WN[0]]);
+
+    }
+    public static void test()
+    {
+        var nq = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+    var n = nq[0];
+    var q = nq[1];
+    var tree = new SegmentTree<int>(Enumerable.Repeat(int.MaxValue, n), (x, y) => Math.Min(x, y), int.MaxValue);
+    var results = new List<int>();
+    for (int i = 0; i < q; i++)
+    {
+        var inputs = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+
+        if (inputs[0] == 0)
+        {
+            tree.Update(inputs[1], inputs[2]);
+        }
+        else if (inputs[0] == 1)
+        {
+            var result = tree.Execute(inputs[1], inputs[2] + 1);
+            results.Add(result);
+        }
+    }
+
+    foreach (var item in results) Console.WriteLine(item);
+
+    }
+    /// <summary>
+    /// 木dp
+    /// </summary>
+    public static void typical90_039()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var graph = new List<List<int>>();
+        var dp = new long[N];
+        var path = new (int, int)[N];
+        for(int i = 0; i < N; i++)
+        {
+            graph.Add(new List<int>());
+        }
+        for(int i = 0; i < N - 1; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            path[i] = (read[0] - 1, read[1] - 1);
+            graph[read[0] - 1].Add(read[1] - 1);
+            graph[read[1] - 1].Add(read[0] - 1);
+        }
+        dfs(0, -1);
+        long ans = 0;
+        for(int i = 0; i < N; i++)
+        {
+            long r = Math.Min(dp[path[i].Item1], dp[path[i].Item2]);
+            ans += r * (N - r);
+        }
+        Console.WriteLine(ans);
+        void dfs(int now, int pre)
+        {
+            dp[now] = 1;
+            foreach(var i in graph[now])
+            {
+                if(i != pre)
+                {
+                    dfs(i, now);
+                    dp[now] += dp[i];
+                }
+            }
+        }
+    }
+    public static void ABC148_E()
+    {
+        long N = long.Parse(Console.ReadLine());
+        long ans = 0;
+        long temp = 10;
+        if(N % 2 == 0)
+        {
+            while(temp <=  N)
+            {
+            ans += N / temp;
+            temp *= 5;
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC054_B()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = new char[NM[0]][];
+        var B = new char[NM[1]][];
+        for(int i = 0; i < NM[0] + NM[1]; i++)
+        {
+            if(i < NM[0])
+            {
+                A[i] = Console.ReadLine().ToCharArray();
+            }
+            else
+            {
+                B[i - NM[0]] = Console.ReadLine().ToCharArray();
+            }
+        }
+        for(int i = 0; i <= NM[0] - NM[1] ; i++)
+        {
+            for(int j = 0; j <= NM[0] - NM[1]; j++)
+            {
+                bool ok = true;
+                for(int k = 0; k < NM[1]; k++)
+                {
+                    for(int l = 0; l < NM[1]; l++)
+                    {
+                        if(A[i + k][j + l] != B[k][l])
+                        {
+                            ok = false;
+                        }
+                    }
+                }
+                if(ok)
+                {
+                    Console.WriteLine("Yes");
+                    return;
+                }
+            }
+        }
+        Console.WriteLine("No");
+        
+    }
+    /// <summary>
+    /// 素因数分解　素因数列挙
+    /// </summary>
+    public static void ABC142_D()
+    {
+        var AB = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        int ans = 0;
+        var list = enumpr(gcd(AB[0],AB[1]));
+        ans = list.Count() + 1;
+        Console.WriteLine(ans);
+        long gcd(long C, long D)
+        {
+            long tempC = C;
+            long tempD = D;
+
+            long r = tempD % tempC;
+            while(r != 0)
+            {
+                tempD = tempC;
+                tempC = r;
+                r = tempD % tempC;
+            }
+            return tempC;
+        }
+        List<long> enumpr(long n)
+        {
+            var list = new List<long>();
+            for(long i = 2; i < Math.Sqrt(n); i++)
+            {
+                while(n % i == 0)
+                {
+                    if(!list.Contains(i))
+                    list.Add(i);
+                    n /= i;
+                }
+            }
+            if(n > 1) list.Add(n);
+            return list;
+        } 
+    }
+}
 }
