@@ -7971,5 +7971,242 @@ namespace atcoder
             return list;
         } 
     }
+    public static void programking2_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var D = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        long mod = 998244353;
+        
+        var p = new int[N + 1];
+        D.ToList().ForEach(x => p[x]++);
+        BigInteger ans = 1;
+        if(D[0] != 0 || p[0] != 1)
+        {
+            Console.WriteLine(0);
+            return;
+        }
+        for(int i = 1; i <= N; i++)
+        {
+            ans *= BigInteger.ModPow(p[i - 1], p[i], mod);
+            ans %= mod;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC229_A()
+    {
+        var a = new char[2][];
+        a[0] = Console.ReadLine().ToCharArray();
+        a[1] = Console.ReadLine().ToCharArray();
+        if(a[0][0] == '.' && a[1][1] == '.' || a[0][1] == '.' && a[1][0] == '.')
+        {
+            Console.WriteLine("No");
+        }
+        else
+        {
+            Console.WriteLine("Yes");
+        }
+    }
+    public static void ABC229_B()
+    {
+        var AB = Console.ReadLine().Split();
+        var A = AB[0].ToArray();
+        var B = AB[1].ToCharArray();
+        var ok = true;
+        for(int i = 0; i < Math.Min(A.Length, B.Length); i++)
+        {
+            if((A[A.Length - 1 - i] - '0') + (B[B.Length - 1 - i] - '0') > 9)
+            {
+                ok = false;
+            }
+
+        }
+        if(ok) Console.WriteLine("Easy");
+        else Console.WriteLine("Hard");
+        
+    }
+    public static void ABC229_C()
+    {
+        var NW = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var cheese = new (long, long)[NW[0]];
+        for(int i = 0; i < NW[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            cheese[i] = (read[0], read[1]);
+        }
+        cheese = cheese.ToList().OrderByDescending(x => x.Item1).ToArray();
+        long temp = 0;
+        long ans = 0;
+        for(int i = 0; i < NW[0]; i++)
+        {
+            if(cheese[i].Item2 <= NW[1] - temp)
+            {
+                ans += cheese[i].Item1 * cheese[i].Item2;
+                temp += cheese[i].Item2;
+            }
+            else
+            {
+                ans += cheese[i].Item1 * (NW[1] - temp);
+                temp += NW[1] - temp;
+            }
+            if(temp == NW[1]) break;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC229_D_sub()
+    {
+        var S = Console.ReadLine();
+        int K = int.Parse(Console.ReadLine());
+        int[,] dp = new int[200005,200005];
+        if(S[0] == 'X')
+        {
+            dp[0,0] = 1;
+        }
+        for(int i = 1; i < S.Length; i++)
+        {
+            for(int j = 0; j <= K; j++)
+            {
+                if(S[i] == 'X')
+                {
+                    dp[i, j] = dp[i - 1, j] + 1;
+                }
+                else
+                {
+                    if(j >= 1)
+                    dp[i, j] = dp[i - 1, j - 1] + 1;
+                }
+            }
+        }
+        long ans = 0;
+        for(int i = 0; i <= K; i++)
+        {
+            ans = Math.Max(ans, dp[S.Length, i]);
+        }
+        Console.WriteLine(ans);
+
+        
+    }
+    public static void ABC229_D()
+    {
+        var S = Console.ReadLine();
+        int K = int.Parse(Console.ReadLine());
+        int temp = 0;
+        int index = 0;
+        int ans = 0;
+        int count = 0;
+        for(int i = 0; i < S.Length; i++)
+        {
+            while(index < S.Length && temp <= K)
+            {  
+                if(S[index] == '.' && temp == K)
+                {
+                    break;
+                }
+                if(S[index] == '.')
+                {
+                    temp++;
+                }
+                count++;
+                index++;
+            }
+            ans = Math.Max(ans, count);
+            if(S[i] == '.')
+            {
+                temp--;
+            }
+            count--;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC229_E()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var graph = new List<List<int>>();
+        for(int i = 0; i < NM[0]; i++)
+        {
+            graph.Add(new List<int>());
+        }
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            graph[read[0] - 1].Add(read[1] - 1);
+        }
+        var uf = new UnionFind<int>(Enumerable.Range(0, NM[0]));
+        long ans = 0;
+        var ansList = new List<long>();
+        for(int i = NM[0] - 1; i >= 1; i--)
+        {
+            ans++;
+            foreach(var v in graph[i])
+            {
+                if(!uf.IsSame(i, v))
+                {
+                    uf.Unite(i, v);
+                    ans--;
+                }
+            }
+            ansList.Add(ans);
+        }
+        ansList.Reverse();
+        var sb = new StringBuilder();
+        foreach(var i in ansList)
+        {
+            Console.WriteLine(i);
+        }
+        Console.WriteLine(0);
+
+    }
+    public static void ABC229_H()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var S = new char[N][];
+        var B = 0;
+        var W = 0;
+        var upB = 0;
+        var upW = 0;
+        for(int i = 0; i < N; i++)
+        {
+            S[i] = Console.ReadLine().ToCharArray();
+            for(int j = 0; j < N; j++)
+            {
+                if(S[i][j] == 'B')
+                {
+                    B++;
+                }
+                else if(S[i][j] == 'W')
+                {
+                    W++;
+                }
+            }
+        }
+        for(int i = 1; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                if(S[i - 1][j] == '.' && S[i][j] == 'B')
+                {
+                    upB++;
+                }
+                else if(S[i - 1][j] == '.' && S[i][j] == 'W')
+                {
+                    upW++;
+                }
+            }
+        }
+        var takahashi = Math.Min(upW, B);
+        var snuke = Math.Min(upB, W);
+        bool saki = true;
+        while(true)
+        {
+            if(saki && takahashi == 0)
+            {
+                Console.WriteLine("Snuke");
+            }
+            else if(!saki && snuke == 0)
+            {
+                Console.WriteLine("Takahashi");
+            }
+
+        }
+    }
 }
 }
