@@ -8208,5 +8208,311 @@ namespace atcoder
 
         }
     }
+    public static void ABC125_D()
+    {
+        int N = int.Parse(Console.ReadLine());    
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long sum = 0;
+        long minus = 0;
+        long min = longMax;
+        for(int i = 0; i < N; i++)
+        {
+            sum += Math.Abs(A[i]);
+            if(A[i] < 0)
+            {
+                minus++; 
+            }
+            min = Math.Min(min, Math.Abs(A[i]));
+
+        }
+        if(minus % 2 == 0)
+        {
+            Console.WriteLine(sum);
+        }
+        else
+        {
+            Console.WriteLine(sum - 2 * min);
+        }
+    }
+    public static void ABC160_D()
+    {
+        var NXY = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var distance = new int[NXY[0], NXY[0]];
+        for(int i = 0; i < NXY[0]; i++)
+        {
+            for(int j = i + 1; j < NXY[0]; j++)
+            {
+                distance[i, j] = Math.Abs(i - j);
+            }
+        }
+        int cut = NXY[2] - NXY[1] - 1;
+        for(int i = 0; i < NXY[1]; i++)
+        {
+            for(int j = NXY[2] - 1; j < NXY[0]; j++)
+            {
+                distance[i, j] -= cut;
+            }
+            for(int j = NXY[2] - 1; j >= NXY[1]; j--)
+            {
+                distance[i, j] = Math.Min(distance[i, j], NXY[1] - 1 - i + 1 + NXY[2] - 1 - j);
+            }
+        }
+        for(int i = NXY[1]; i < NXY[2] - 1; i++)
+        {
+            for(int j = NXY[2] - 1; j < NXY[0]; j++)
+            {
+                if(i - NXY[1] < NXY[2] - i)
+                {
+                    distance[i, j] = Math.Min(distance[i, j], i - (NXY[1] - 1)+ 1 + j - NXY[2] + 1);
+                }
+            }
+            for(int j = NXY[2] - 1; j >= i; j--)
+            {
+                distance[i, j] = Math.Min(distance[i, j], i - (NXY[1] - 1) + 1 + (NXY[2] - 1 - j));
+            }
+        }
+        var ans = new int[NXY[0]];
+        for(int i = 0; i < NXY[0]; i++)
+        {
+            for(int j = i + 1; j < NXY[0]; j++)
+            {
+                ans[distance[i, j]]++;
+            }
+        }
+        for(int i = 1; i < NXY[0]; i++)
+        {
+            Console.WriteLine(ans[i]);
+        }
+    }
+    public static void diverta2019_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new List<String>();
+        int ans = 0;
+        int acount = 0;
+        int bcount = 0;
+        int abcount = 0;
+        for(int i = 0; i < N; i++)
+        {
+            list.Add(Console.ReadLine());
+            for(int j = 0; j < list[i].Length - 1; j++)
+            {
+                if(list[i][j] == 'A' && list[i][j + 1] == 'B')
+                {
+                    ans++;
+                }
+                
+            }
+            if(list[i][0] == 'B' && list[i][list[i].Length - 1] == 'A')
+            {
+                abcount++;
+            }
+            else if(list[i][0] == 'B')
+            {
+                bcount++;
+            }
+            else if(list[i][list[i].Length - 1] == 'A')
+            {
+                acount++;
+            }
+        }
+        if(acount > 0 || bcount > 0)
+        {
+            ans += abcount + Math.Min(acount,bcount);
+        }
+        else
+        {
+            ans += Math.Max(abcount - 1, 0);
+        }
+        
+        
+        Console.WriteLine(ans);
+    }
+    public static void ABC051_C()
+    {
+        var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int sx = read[0];
+        int sy = read[1];
+        int tx = read[2];
+        int ty = read[3];
+        String ans = "";
+
+        if(sy <= ty)
+        {
+            ans = make("U", ty - sy);
+            if(sx <= tx)
+            {
+                ans += make("R", tx - sx);
+            }
+            else
+            {
+                ans += make("L", tx - sx);
+            }
+            ans += make("D", ty - sy);
+            if(sx <= tx)
+            {
+                ans += make("L", tx - sx);
+            }
+            else
+            {
+                ans += make("R", tx - sx);
+            }
+            
+            //2回目
+            if(sx <= tx)
+            {
+                ans += "L";
+            }
+            else
+            {
+                ans += "R";
+            }
+            ans += make("U", ty - sy + 1);
+            if(sx <= tx)
+            {
+                ans += make("R", tx - sx + 1);
+            }
+            else
+            {
+                ans += make("L", tx - sx + 1);
+            }
+            ans += "D";
+            if(sx <= tx)
+            {
+                ans += "R";
+            }
+            else
+            {
+                ans += "L";
+            }
+            ans += make("D", ty - sy + 1);
+            if(sx <= tx)
+            {
+                ans += make("L", tx - sx + 1);
+            }
+            else
+            {
+                ans += make("R", tx - sx + 1);
+            }
+            ans += "U";
+        }
+        else
+        {
+            ans = make("D", ty - sy);
+            if(sx <= tx)
+            {
+                ans += make("R", tx - sx);
+            }
+            else
+            {
+                ans += make("L", tx - sx);
+            }
+            ans += make("U", ty - sy);
+            if(sx <= tx)
+            {
+                ans += make("L", tx - sx);
+            }
+            else
+            {
+                ans += make("R", tx - sx);
+            }
+
+            //2回目
+            if(sx <= tx)
+            {
+                ans += "L";
+            }
+            else
+            {
+                ans += "R";
+            }
+            ans += make("D", ty - sy + 1);
+            if(sx <= tx)
+            {
+                ans += make("R", tx - sx + 1);
+            }
+            else
+            {
+                ans += make("L", tx - sx + 1);
+            }
+            ans += "U";
+            if(sx <= tx)
+            {
+                ans += "R";
+            }
+            else
+            {
+                ans += "L";
+            }
+            ans += make("U", ty - sy + 1);
+            if(sx <= tx)
+            {
+                ans += make("L", tx - sx + 1);
+            }
+            else
+            {
+                ans += make("R", tx - sx + 1);
+            }
+            ans += "D";
+        }
+        Console.WriteLine(ans);
+        String make(String s, int n)
+        {
+            var sb = new StringBuilder();
+            for(int i = 0; i < n; i++)
+            {
+                sb.Append(s);
+            }
+            return sb.ToString();
+        }
+    }
+    public static void ABC080_D()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var fields = new int[HW[0], HW[1]];
+        int x = 0;
+        int y = 0;
+        bool start = true;
+        for(int i = 0; i < N; i++)
+        {
+            while(a[i] > 0)
+            {
+                if(start)
+                {
+                    fields[y,x] = i + 1;
+                    x++;
+                    if(x == HW[1])
+                    {
+                        y++;
+                        x = HW[1] - 1;
+                        start = false;
+                    }
+                }
+                else
+                {
+                    fields[y, x] = i + 1;
+                    x--;
+                    if(x == -1)
+                    {
+                        y++;
+                        x = 0;
+                        start = true;
+                    }
+                }
+                a[i]--;
+            }
+        }
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                if(j == HW[1] - 1)
+                Console.WriteLine(fields[i, j]);
+                else Console.Write($"{fields[i, j]} ");
+            }
+        }
+    }
 }
 }
