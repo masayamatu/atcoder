@@ -8514,5 +8514,257 @@ namespace atcoder
             }
         }
     }
+    public static void AGC055_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        String S = Console.ReadLine();
+        var ans = Enumerable.Repeat(0, 3 * N).ToArray();
+        var A = new char[3]{'A','B','C'};
+        int index = 1;
+        var selected = new bool[3 * N];
+        var one = new List<int>();
+        var two = new List<int>();
+        var three = new List<int>();
+        do
+        {
+            for(int i = 0; i < N; i++)
+            {
+                if(S[i] == A[0] && !selected[i])
+                {
+                    one.Add(i);
+                }
+            }
+            for(int i = N; i < 2 * N; i++)
+            {
+                if(S[i] == A[1] && !selected[i])
+                {
+                    two.Add(i);
+                }
+            }
+            for(int i = 2 * N; i < 3 * N; i++)
+            {
+                if(S[i] == A[2] && !selected[i])
+                {
+                    three.Add(i);
+                }
+            }
+            for(int i = 0; i < Math.Min(one.Count(), Math.Min(two.Count(), three.Count())); i++)
+            {
+                ans[one[i]] = index;
+                ans[two[i]] = index;
+                ans[three[i]] = index;
+                selected[one[i]] = true;
+                selected[two[i]] = true;
+                selected[three[i]] = true;
+            }
+            one.Clear();
+            two.Clear();
+            three.Clear();
+            index++;
+        }while(NextPermutation.Next_Permutation(A));
+        for(int i = 0; i < 3 * N; i++)
+        {
+            if(i != 3 * N)
+            {
+                Console.Write(ans[i]);
+            }
+            else
+            {
+                Console.WriteLine(ans[i]);
+            }
+        }
+
+    }
+    public static void typical90_044()
+    {
+        var NQ = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        int shift = 0;
+        var index = Enumerable.Range(0, NQ[0]).ToArray();
+        for(int i = 0; i < NQ[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            if(read[0] == 1)
+            {
+                var read1 = read[1] - 1 - shift;
+                while(read1 < 0) 
+                {
+                    read1 += NQ[0];
+                }
+                var read2 = read[2] - 1 - shift;
+                while(read2 < 0)
+                {
+                    read2 += NQ[0];
+                } 
+                var temp = index[read1];
+                index[read1] = index[read2];
+                index[read2] = temp;
+            }
+            else if(read[0] == 2)
+            {
+                shift++;
+            }
+            else
+            {
+                var temp = read[1] - 1 - shift;
+                while(temp < 0) 
+                {
+                    temp += NQ[0];
+                }
+                Console.WriteLine(A[index[temp]]);
+            }
+            
+        }
+    }
+    public static void typical90_042()
+    {
+        int K = int.Parse(Console.ReadLine());
+        long mod = 1000000007;
+        var dp = new long[K + 1];
+        dp[0] = 1;
+        if(K % 9 != 0)
+        {
+            Console.WriteLine(0);
+            return;
+        }
+        for(int i = 1; i <= K; i++)
+        {
+            int limit = Math.Min(i, 9);
+            for(int j = 1; j <= limit; j++)
+            {
+                dp[i] += dp[i - j];
+                dp[i] %= mod;
+            }
+        }
+        Console.WriteLine(dp[K]);
+    }
+    /// <summary>
+    /// 経路探索、bfs
+    /// </summary>
+    public static void typical90_043()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var start = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var goal = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var field = new char[HW[0]][];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            field[i] = Console.ReadLine().ToCharArray();
+        }
+        var dp = new int[HW[0],HW[1],4];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                for(int k = 0; k < 4; k++)
+                {
+                    dp[i, j, k] = intMax;
+                }
+            }
+        }
+        var move = new (int, int)[4]{(-1, 0),(1, 0),(0, 1),(0, -1)};
+        
+        var q = new Queue<(int, int, int)>();
+        for(int i = 0; i < 4; i++)
+        {
+            q.Enqueue((start[0] - 1, start[1] - 1, i));
+            dp[start[0] - 1, start[1] - 1, i] = 0;
+
+        }
+
+        while(q.Count() != 0)
+        {
+            (int, int, int) now = q.Dequeue();
+            int index = 0;
+            foreach(var i in move)
+            {
+                int ny = now.Item1 + i.Item1, nx = now.Item2 + i.Item2, cost = dp[now.Item1, now.Item2, now.Item3];
+                if(ny >= 0 && ny < HW[0] && nx >= 0 && nx < HW[1] && field[ny][nx] != '#')
+                {
+                    if(index != now.Item3)
+                    {
+                        if(dp[ny, nx, index] > cost + 1)
+                        {
+                            dp[ny, nx, index] = cost + 1;
+                            q.Enqueue((ny, nx, index)); 
+                        }
+                    }
+                    else
+                    {
+                        if(dp[ny, nx, index] > cost)
+                        {
+                            dp[ny, nx, index] = cost;
+                            q.Enqueue((ny, nx, index));
+                        }
+                    }
+                }
+                index++;
+            }
+            
+
+        }
+        int ans = intMax;
+        for(int i = 0; i < 4; i++)
+        {
+            ans = Math.Min(ans, dp[goal[0] - 1, goal[1] - 1, i]);
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void typical90_045()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var point = new (long, long)[NK[0]];
+        for(int i = 0; i < NK[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            point[i] = (read[0], read[1]);
+        }
+        var d = new long[NK[0], NK[0]];
+        for(int i = 0; i < NK[0]; i++)
+        {
+            for(int j = 0; j < NK[0]; j++)
+            {
+                d[i, j] = (point[i].Item1 - point[j].Item1) * (point[i].Item1 - point[j].Item1) + (point[i].Item2 - point[j].Item2) * (point[i].Item2 - point[j].Item2);
+            }
+        }
+        var cost = new long[1 << NK[0]];
+        
+        for(int i = 0; i < 1 << NK[0]; i++)
+        {
+            for(int j = 0; j < NK[0]; j++)
+            {
+                for(int k = 0; k < NK[0]; k++)
+                {
+                    if(((i >> j) & 1) == 1 && ((i >> k) & 1) == 1)
+                    {
+                        cost[i] = Math.Max(cost[i], d[j, k]);
+                    }
+                }
+            }
+        }
+
+        var dp = new long[NK[1] + 1, 1 << NK[0]];
+        for(int i = 0; i < dp.GetLength(0); i++)
+        {
+            for(int j = 0; j < dp.GetLength(1); j++)
+            {
+                dp[i, j] = longMax;
+            }
+        }
+        dp[0, 0] = 0;
+        for(int i = 1; i <= NK[1]; i++)
+        {
+            for(int j = 1; j < 1 << NK[0]; j++)
+            {
+                for(int k = j; k != 0; k = (k - 1) & j)
+                {
+                    dp[i, j] = Math.Min(dp[i, j], Math.Max(dp[i - 1, j - k], cost[k]));
+                }
+            }
+        }
+
+        Console.WriteLine(dp[NK[1], (1 << NK[0]) - 1]);
+    }
 }
 }
