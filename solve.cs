@@ -8766,5 +8766,3169 @@ namespace atcoder
 
         Console.WriteLine(dp[NK[1], (1 << NK[0]) - 1]);
     }
+    public static void ABC230_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        String ans = "AGC0";
+        if(N >= 42)
+        {
+            ans += Convert.ToString(N + 1);
+        }
+        else if(N < 10)
+        {
+            ans += "0";
+            ans += Convert.ToString(N);
+        }
+        else
+        {
+            ans += Convert.ToString(N);
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC230_B()
+    {
+        var S = Console.ReadLine();
+        var sb = new StringBuilder();
+        for(int i = 0; i < 100000; i++)
+        {
+            sb.Append("oxx");
+        }
+        string T = sb.ToString();
+        if(T.Contains(S))
+        {
+            Console.WriteLine("Yes");
+        }
+        else
+        {
+            Console.WriteLine("No");
+        }
+    }
+    public static void ABC230_C_sub()
+    {
+        var NAB = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        /*NAB[0]--;
+        NAB[1]--;
+        NAB[2]--;*/
+        long wstart = Math.Max(1 - NAB[1], 1 - NAB[2]);
+        long wend = Math.Min(NAB[0] - NAB[1], NAB[0] - NAB[2]);
+        long bstart = Math.Max(1 - NAB[1], NAB[2] - NAB[0]);
+        long bend = Math.Min(NAB[0] - NAB[1], NAB[2] - 1);
+        var PQRS = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        /*PQRS[0]--;
+        PQRS[1]--;
+        PQRS[2]--;
+        PQRS[3]--;*/
+        var field = new int[PQRS[1] - PQRS[0] + 1,PQRS[3] - PQRS[2] + 1];
+        (long, long) start1 = (0, NAB[1] + wstart + PQRS[0] - 1 - PQRS[2]);
+        //(long, long) end1 = (NAB[1] + wend - PQRS[0], NAB[2] + wend - PQRS[0]);
+        (long, long) start2 = (0, (NAB[2] - 1) - bstart + (NAB[2] - 1 + bstart - (PQRS[0] - 1)) - (PQRS[2] - 1));
+        //(long, long) end2 = (NAB[1] + bend - PQRS[0], NAB[2] - bend - PQRS[0]);
+
+        /*for(int i = 0; i < field.GetLength(0); i++)
+        {
+            for(int j = 0; j < field.GetLength(1); j++)
+            {
+                if(i == start1.Item1 && j == start1.Item2)
+                {
+                    field[i, j] = 1;
+                }
+                else if (i >= 1 && j >= 1 && field[i - 1, j - 1] == 1 && i <= end1.Item1 && j <= end1.Item2)
+                {
+                    field[i, j] = 1;
+                }
+                if(i == start2.Item1 && j == start2.Item2)
+                {
+                    field[i, j] = 1;
+                }
+                else if(i >= 1 && j >= 1 && j <= field.GetLength(1) - 2 && field[i - 1, j + 1] == 1 && i <= end2.Item1 && j >= end2.Item2)
+                {
+                    field[i, j] = 1;
+                }
+            }
+        }*/
+        while(start1.Item1 < field.GetLength(0) && start1.Item2 < field.GetLength(1))
+        {
+            field[start1.Item1,start1.Item2] = 1;
+            start1.Item1++;
+            start1.Item2++;
+        }
+        while(start2.Item1 < field.GetLength(0) && start2.Item2 >= 0)
+        {
+            field[start2.Item1,start2.Item2] = 1;
+            start2.Item1++;
+            start2.Item2--;
+        }
+
+        for(int i = 0; i < field.GetLength(0); i++)
+        {
+            var sb = new StringBuilder();
+            for(int j = 0; j < field.GetLength(1); j++)
+            {
+                
+                if(j < field.GetLength(1) - 1)
+                {
+                    if(field[i, j] == 1)
+                    {
+                        sb.Append("#");
+                    }
+                    else
+                    {
+                        sb.Append(".");
+                    }
+                }
+                else
+                {
+                    if(field[i, j] == 1)
+                    {
+                        sb.Append("#");
+                        Console.WriteLine(sb.ToString());
+                    }
+                    else
+                    {
+                        sb.Append(".");
+                        Console.WriteLine(sb.ToString());
+                    }
+                }
+            }
+        }
+
+    }
+    public static void ABC230_C()
+    {
+        var NAB = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long N = NAB[0];
+        long A = NAB[1];
+        long B = NAB[2];
+        var PQRS = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long P = PQRS[0];
+        long Q = PQRS[1];
+        long R = PQRS[2];
+        long S = PQRS[3];
+        var field = new int[Q - P + 1, S - R + 1];
+        for(long i = P; i <= Q; i++)
+        {
+            for(long j = R; j <= S; j++)
+            {
+                if(Math.Abs(i - A) == Math.Abs(j - B))
+                {
+                    field[i - P, j - R] = 1;
+                }
+            }
+        }
+        for(int i = 0; i < field.GetLength(0); i++)
+        {
+            var sb = new StringBuilder();
+            for(int j = 0; j < field.GetLength(1); j++)
+            {
+                if(j < field.GetLength(1) - 1)
+                {
+                    if(field[i, j] == 1)
+                    {
+                        sb.Append("#");
+                    }
+                    else
+                    {
+                        sb.Append(".");
+                    }
+                }
+                else
+                {
+                    if(field[i,j] == 1)
+                    {
+                        sb.Append("#");
+                        Console.WriteLine(sb.ToString());
+                    }
+                    else
+                    {
+                        sb.Append(".");
+                        Console.WriteLine(sb.ToString());
+                    }
+                }
+            }
+        }
+    }
+    public static void ABC230_D()
+    {
+        var ND = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var kabe = new (int, int)[ND[0]];
+        for(int i = 0; i < ND[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            kabe[i] = (read[0], read[1]);
+        }
+        kabe = kabe.ToList().OrderBy(x => x.Item2).ToArray();
+        int ans = 0;
+        long tempR = -1;
+        for(int i = 0; i < ND[0]; i++)
+        {
+            if(tempR < kabe[i].Item1)
+            {
+                tempR = kabe[i].Item2 + ND[1] - 1;
+                ans++;
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC230_E()
+    {
+        long N = long.Parse(Console.ReadLine());
+        long ans = 0;
+        for(long i = 1; i <= N;)
+        {
+            long x = N/i;
+            long ni = N/x + 1;
+            ans += x * (ni - i);
+            i = ni;
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void ABC113_C()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var list = new Dictionary<String,Set<int>>();
+        var PY = new (int, int)[NM[1]];
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            PY[i] = (read[0], read[1]);
+            var P = read[0].ToString("000000");
+            if(!list.ContainsKey(P))
+            {
+                list.Add(P, new Set<int>());
+                list[P].Add(read[1]);
+            }
+            else
+            {
+                list[P].Add(read[1]);
+            }
+        }
+        for(int i = 0; i < NM[1]; i++)
+        {
+            String id = "";
+            id += PY[i].Item1.ToString("000000");
+            id += list[id].LowerBound(PY[i].Item2 + 1).ToString("000000");
+            Console.WriteLine(id);
+        }
+    }
+    public static void ABC094_D()
+    {
+        int n = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        Array.Sort(a);
+        int l = 0;
+        int r = n;
+        while(r - l > 1)
+        {
+            int mid = (l + r) / 2;
+            if(a[mid] > a[n - 1]/2)
+            {
+                r = mid;
+            }
+            else
+            {
+                l = mid;
+            }
+        }
+        int choose = l;
+        if(a[n - 1] - a[l + 1] == a[n - 1]/2)
+        {
+            choose = l + 1;
+        }
+        else if(Math.Abs(a[l] - a[n - 1]/2) > Math.Abs(a[l + 1] - a[n - 1] / 2))
+        {
+            choose = l + 1;
+        }
+        Console.WriteLine($"{a[n - 1]} {a[choose]}");
+    }
+    public static void ABC110_C()
+    {
+        var S = Console.ReadLine().ToCharArray();
+        var T = Console.ReadLine().ToCharArray();
+        var lists = new Dictionary<char, char>();
+        var listt = new Dictionary<char, char>();
+        bool ok = true;
+        for(int i = 0; i < S.Length; i++)
+        {
+            if(lists.ContainsKey(S[i]) || listt.ContainsKey(T[i]))
+            {
+                if(lists.ContainsKey(S[i]) && T[i] != lists[S[i]])
+                {
+                    ok = false;
+                    break;
+                }
+                if(listt.ContainsKey(T[i]) && S[i] != listt[T[i]])
+                {
+                    ok = false;
+                    break;
+                }
+                
+            }
+            else if(S[i] != T[i])
+            {
+                lists.Add(S[i], T[i]);
+                listt.Add(T[i],S[i]);
+            }
+        }
+        if(ok)
+        {
+            Console.WriteLine("Yes");
+        }
+        else
+        {
+            Console.WriteLine("No");
+        }
+    }
+    public static void ABC049_C()
+    {
+        String S = Console.ReadLine();
+        var list = new String[4];
+        list[0] = "maerd";
+        list[1] = "remaerd";
+        list[2] = "esare";
+        list[3] = "resare";
+        var sb = new StringBuilder();
+        var ok = true;
+        for(int i = S.Length - 1; i >= 0; i--)
+        {
+            sb.Append(S[i]);
+            if(sb.Length == 5)
+            {
+                if(sb.ToString() == list[0] || sb.ToString() == list[2])
+                {
+                    sb.Clear();
+                }
+            }
+            else if(sb.Length == 6)
+            {
+                if(sb.ToString() == list[3])
+                {
+                    sb.Clear();
+                }
+            }
+            else if(sb.Length == 7)
+            {
+                if(sb.ToString() == list[1])
+                {
+                    sb.Clear();
+                }
+            }
+            else if(sb.Length > 7)
+            {
+                ok = false;
+                break;
+            }
+        }
+        if(ok) Console.WriteLine("YES");
+        else Console.WriteLine("NO");
+    }
+    public static void keyence2020_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var robo = new (int, int)[N];
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            robo[i] = (read[0] - read[1], read[0] + read[1]);
+        }
+        robo = robo.ToList().OrderBy(x => x.Item2).ToArray();
+        var ans = 0;
+        long temp = -longMax;
+        for(int i = 0; i < N; i++)
+        {
+            if(temp <= robo[i].Item1)
+            {
+                ans++;
+                temp = robo[i].Item2;
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void AGC056_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        if(N == 6)
+        {
+            Console.WriteLine("###...");
+            Console.WriteLine("...###");
+            Console.WriteLine("###...");
+            Console.WriteLine("...###");
+            Console.WriteLine("###...");
+            Console.WriteLine("...###");
+        }
+        else if(N == 7)
+        {
+            Console.WriteLine("##..#..");
+            Console.WriteLine("##..#..");
+            Console.WriteLine("..##.#.");
+            Console.WriteLine("..##.#.");
+            Console.WriteLine("##....#");
+            Console.WriteLine("..##..#");
+            Console.WriteLine("....###");
+        }
+        else
+        {
+            int M = N - 3;
+            for (int i = 0; i < N; i++)
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    if (i >= M)
+                    {
+                        if (j >= M) Console.Write("#");
+                        else Console.Write(".");
+                    }
+                    else
+                    {
+                        if (j < M)
+                        {
+                            int k = (i - j + M) % M;
+                            if (k == 0 || k == 1 || k == 3) Console.Write("#");
+                            else Console.Write(".");
+                        }
+                        else Console.Write(".");
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+    }
+    public static void ABC084_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new (int, int, int)[N];
+        for(int i = 0; i < N - 1; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            list[i] = (read[0], read[1], read[2]);
+        }
+        for(int i = 0; i < N - 1; i++)
+        {
+            var ans = 0;
+            ans += list[i].Item2 + list[i].Item1;
+            for(int j = i + 1; j < N - 1; j++)
+            {
+                int wait = 0;
+                if(ans > list[j].Item2)
+                {
+                    wait = (list[j].Item3 - (ans - list[j].Item2) % list[j].Item3) % list[j].Item3;
+                }
+                else
+                {
+                    wait = list[j].Item2 - ans;
+                }
+                ans += wait + list[j].Item1;
+            }
+            Console.WriteLine(ans);
+        }
+        Console.WriteLine(0);
+    }
+    public static void codefes2016C_B()
+    {
+        var KT = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int ans = 0;
+        Array.Sort(a);
+        ans = Math.Max(a[KT[1] - 1] - (KT[0] - a[KT[1] - 1]) - 1,0);
+        Console.WriteLine(ans);
+    }
+    public static void ABC107_C()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var x = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        long ans = longMax;
+        for(int i = 0; i <= NK[0] - NK[1]; i++)
+        {
+            ans = Math.Min(ans,Math.Abs(x[i]) + Math.Abs(x[i + NK[1] - 1] - x[i]));
+            ans = Math.Min(ans,Math.Abs(x[i + NK[1] - 1]) + Math.Abs(x[i + NK[1] - 1] - x[i]));
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ARC131_B()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var field = new char[HW[0]][];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            field[i] = Console.ReadLine().ToCharArray();
+        }
+        var move = new (int, int)[]{(-1, 0),(1, 0),(0, -1),(0, 1)};
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                var list = new List<char>();
+                list.Add('1');
+                list.Add('2');
+                list.Add('3');
+                list.Add('4');
+                list.Add('5');
+                if(field[i][j] == '.')
+                {
+                    foreach(var v in move)
+                    {
+                     if(i + v.Item1 >= 0 && i + v.Item1 < HW[0] && j + v.Item2 >= 0 && j + v.Item2 < HW[1])
+                     {
+                         if(field[i + v.Item1][j + v.Item2] != '.')
+                        {
+                            list.Remove(field[i + v.Item1][j + v.Item2]);
+                        }
+                     }
+                        
+                    }
+                    field[i][j] = list[0];
+                }
+            }
+        }
+        for(int i = 0; i < HW[0]; i++)
+        {
+            var sb = new StringBuilder();
+            for(int j = 0; j < HW[1]; j++)
+            {
+                sb.Append(field[i][j]);
+            }
+            Console.WriteLine(sb.ToString());
+        }
+    }
+    public static void ARC131_A()
+    {
+        var A = int.Parse(Console.ReadLine());
+        var B = int.Parse(Console.ReadLine());
+        String ans = "";
+        var temp = B / 2;
+        if(B % 2 == 0)
+        {
+            
+            ans += Convert.ToString(A) + Convert.ToString(temp);
+        }
+        else if(B == 1)
+        {
+            ans += '5' + Convert.ToString(A);
+        }
+        else
+        {
+
+            var temp2 = (B % 10 - 1) / 2;
+            temp = (int)Math.Floor((decimal)B / 2);
+            ans += Convert.ToString(temp) + '5' + Convert.ToString(A);
+            
+        }
+        Console.WriteLine(ans);
+    }
+    public static void AGC011_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        Array.Sort(A);
+        int ans = N;
+        long sum = 0;
+        int index = 0;
+        for(int i = 0; i < N - 1; i++)
+        {
+            sum += A[i];
+            if(sum * 2 < A[i + 1])
+            {
+                index = i + 1;
+            }
+        }
+        Console.WriteLine(ans - index);
+    }
+    /// <summary>
+    /// ユークリッド
+    /// </summary>
+    public static void AGC018_A()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        Array.Sort(A);
+        var list = new List<int>();
+        long temp = A[0];
+        if(A[NK[0] - 1] < NK[1])
+        {
+            Console.WriteLine("IMPOSSIBLE");
+            return;
+        }
+        else
+        {
+            for(int i = 0; i < NK[0] - 1; i++)
+            {
+                if(A[i] == NK[1])
+                {
+                    Console.WriteLine("POSSIBLE");
+                    return;
+                }
+                temp = gcd(temp, A[i + 1]);
+            }
+        }
+        if(NK[1] % temp == 0)
+        {
+            Console.WriteLine("POSSIBLE");
+        }
+        else
+        {
+            Console.WriteLine("IMPOSSIBLE");
+        }
+        long gcd(long C, long D)
+        {
+            long tempC = C;
+            long tempD = D;
+
+            long r = tempD % tempC;
+            while(r != 0)
+            {
+                tempD = tempC;
+                tempC = r;
+                r = tempD % tempC;
+            }
+            return tempC;
+        }
+    }
+    public static void ABC134_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = new int[N + 1];
+        for(int i = 1; i < N + 1; i++)
+        {
+            A[i] = a[i - 1];
+        }
+
+        var b = new int[N + 1];
+        for(int i = N; i >= 1; i--)
+        {
+            var count = 0;
+            for(int j = i * 2; j <= N; j += i)
+            {
+                if(b[j] > 0) count++;
+            }
+            if(count % 2 != A[i]) b[i] = 1;
+        }
+        var ans = new List<int>();
+        for(int i = 1; i <= N; i++)
+        {
+            if(b[i] > 0) ans.Add(i);
+        }
+        Console.WriteLine(ans.Count());
+        if(ans.Count() == 0) return;
+        var sb = new StringBuilder();
+        foreach(var i in ans)
+        {
+            sb.Append($"{i} ");
+        }
+        Console.WriteLine(sb.ToString().TrimEnd());
+    }
+    public static void ARC067_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new Dictionary<int, int>();
+        
+        while(N > 1)
+        {
+            int temp = N;
+            for(int i = 2; i <= Math.Sqrt(N); i++)
+            {
+                while(temp > 0 && temp % i == 0)
+                {
+                    if(!list.ContainsKey(i))
+                    {
+                        list.Add(i, 1);
+                    }
+                    else
+                    {
+                        list[i]++;
+                    }
+                    temp /= i;
+                }
+            }
+            if(temp != 1)
+            {
+                if(!list.ContainsKey(temp))
+                {
+                    list.Add(temp, 1);
+                }
+                else
+                {
+                    list[temp]++;
+                }
+            }
+            
+            N--;
+        }
+        long ans = 1;
+        foreach(var i in list)
+        {
+            ans *= (i.Value + 1);
+            ans %= 1000000007;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC133_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var sum = A.Sum();
+        var dam = new long[N];
+        dam[0] = sum;
+        for(int i = 1; i < N; i += 2)
+        {
+            dam[0] -= 2 * A[i];
+        }
+        
+        for(int i = 1; i < N; i++)
+        {
+            dam[i] = 2 * A[i - 1] - dam[i - 1];
+        }
+        var sb = new StringBuilder();
+        for(int i = 0; i < N; i++)
+        {
+            sb.Append($"{dam[i]} ");
+        }
+        Console.WriteLine(sb.ToString().TrimEnd());
+    }
+    public static void ARC066_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var list = new Dictionary<int, int>();
+        long mod = 1000000007;
+        for(int i = 0; i < N; i++)
+        {
+            if(!list.ContainsKey(A[i]))
+            {
+                list.Add(A[i], 1);
+            }
+            else
+            {
+                list[A[i]]++;
+                if(A[i] == 0 && list[A[i]] > 1)
+                {
+                    Console.WriteLine(0);
+                    return;
+                }
+                else if (list[A[i]] > 2)
+                {
+                    Console.WriteLine(0);
+                    return;
+                }
+            }
+        }
+        long ans = 0;
+        if(N % 2 == 0)
+        {
+            ans = pow(2, list.Count());
+        }
+        else
+        {
+            ans = pow(2, list.Count() - 1);
+        }
+        Console.WriteLine(ans);
+        long pow(long x, int n)
+        {
+            long ret = 1;
+            while(n > 0)
+            {
+                if((n & 1) > 0) 
+                {
+                    ret *= x;
+                    ret %= mod;
+                }
+                x *= x;
+                x　%= mod;
+                n = n >> 1;
+            }
+            return ret;
+        }
+    }
+    public static void ABC085_D()
+    {
+        var NH = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var attack = new (int, int)[NH[0]];
+        for(int i = 0; i < NH[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            attack[i] = (read[0], read[1]);
+        }
+        attack = attack.ToList().OrderBy(x => x.Item1).Reverse().ToArray();
+        var max = attack[0].Item1;
+        attack = attack.ToList().OrderByDescending(x => x.Item2).ToArray();
+        long ans = 0;
+        for(int i = 0; i < NH[0]; i++)
+        {
+            if(max <= attack[i].Item2)
+            {
+                NH[1] -= attack[i].Item2;
+                ans++;
+                if(NH[1] <= 0) break;
+            }
+        }
+        if(NH[1] > 0)
+        {
+            if(NH[1] % max == 0)
+            {
+                ans += NH[1] / max;
+            }
+            else
+            {
+                ans += (int)Math.Floor(NH[1] / (decimal)max) + 1;
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical90_046()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var B = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var C = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var listA = new Dictionary<int, long>();
+        var listB = new Dictionary<int, long>();
+        var listC = new Dictionary<int, long>();
+        for(int i = 0; i < N; i++)
+        {
+            if(!listA.ContainsKey(A[i] % 46))
+            {
+                listA.Add(A[i] % 46, 1);
+            }
+            else
+            {
+                listA[A[i] % 46]++;
+            }
+            if(!listB.ContainsKey(B[i] % 46))
+            {
+                listB.Add(B[i] % 46, 1);
+            }
+            else
+            {
+                listB[B[i] % 46]++;
+            }
+            if(!listC.ContainsKey(C[i] % 46))
+            {
+                listC.Add(C[i] % 46, 1);
+            }
+            else
+            {
+                listC[C[i] % 46]++;
+            }
+        }
+        long ans = 0;
+        for(int i = 0; i < 46; i++)
+        {
+            for(int j = 0; j < 46; j++)
+            {
+                for(int k = 0; k < 46; k++)
+                {
+                    if((i + j + k) % 46 == 0)
+                    {
+                        if(listA.ContainsKey(i) && listB.ContainsKey(j) && listC.ContainsKey(k))
+                        ans += listA[i] * listB[j] * listC[k];
+                    }
+                }
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical90_048()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var score = new (int, int)[NK[0]];
+        var list = new List<int>();
+        for(int i = 0; i < NK[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            list.Add(read[1]);
+            list.Add(read[0] - read[1]);
+        }
+        long ans = 0;
+        list = list.OrderByDescending(x => x).ToList();
+        for(int i = 0; i < NK[1]; i++)
+        {
+            ans += list[i];
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical90_050()
+    {
+        var NL = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var dp = new long[NL[0] + 1];
+        dp[0] = 1;
+        for(int i = 1; i < NL[0] + 1; i++)
+        {   
+            if(i >= NL[1])
+            {
+                dp[i] = dp[i - 1] + dp[i - NL[1]];
+                dp[i] %= 1000000007;
+            }
+            else
+            {
+                dp[i] = dp[i - 1];
+            }
+        }
+        Console.WriteLine(dp[NL[0]]);
+    }
+    /// <summary>
+    /// 半分全列挙
+    /// </summary>
+    public static void typical90_051()
+    {
+        var NKP = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        int N = (int)NKP[0];
+        int K = (int)NKP[1];
+        long P = NKP[2];
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var list = new Dictionary<long, List<long>>();
+        int mid = N / 2;
+        for(int i = 0; i < 1 << mid; i++)
+        {
+            long cnt1 = 0, cnt2 = 0;
+            for(int j = 0; j < mid; j++)
+            {
+                if((1 & (i >> j)) == 1)
+                {
+                    cnt1 += A[j];
+                    cnt2 += 1;
+                }
+            }
+            if(!list.ContainsKey(cnt2))
+            {
+                list.Add(cnt2, new List<long>());
+                list[cnt2].Add(cnt1);
+            }
+            else if(cnt2 != 0)
+            {
+                list[cnt2].Add(cnt1);
+            }
+        }
+        var list2 = new Dictionary<long, List<long>>();
+        for(int i = 0; i < 1 << (N - mid); i++)
+        {
+            long cnt1 = 0, cnt2 = 0;
+            for(int j = 0; j < N - mid; j++)
+            {
+                if((1 & (i >> j)) == 1)
+                {
+                    cnt1 += A[mid + j];
+                    cnt2 += 1;
+                }
+            }
+            if(!list2.ContainsKey(cnt2))
+            {
+                list2.Add(cnt2, new List<long>());
+                list2[cnt2].Add(cnt1);
+            }
+            else if(cnt2 != 0)
+            {
+                list2[cnt2].Add(cnt1);
+            }
+        }
+        for(int i = 0; i <= N; i++)
+        {
+            if(list.ContainsKey(i))
+            list[i] = list[i].OrderBy(x => x).ToList();
+            if(list2.ContainsKey(i))
+            list2[i] = list2[i].OrderBy(x => x).ToList();
+            
+        }
+        long ans = 0;
+        for(int h = 0; h <= Math.Min(K, mid); h++)
+        {
+            for(int i = 0; i < list[h].Count(); i++)
+            {
+                if(list2.ContainsKey(K - h))
+                {
+                    long rest = P - list[h].ElementAt(i) + 1;
+                    int l = 0, r = list2[K - h].Count();
+                    while(r - l > 1)
+                        {
+                        int m = (r + l) / 2;
+                        if(list2[K - h].ElementAt(m) > rest)
+                        {
+                            r = m;
+                        }
+                        else
+                        {
+                            l = m;
+                        }
+                    }
+                    if(l == 0 && list2[K - h][0] < rest)
+                    {
+                        ans += 1;
+                    }
+                    else if(l != 0)
+                    {
+                        ans += l + 1;
+                    }
+                }
+                
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical90_052()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var dice = new int[N][];
+        long ans = 1;
+
+        for(int i = 0; i < N; i++)
+        {
+            dice[i] = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            ans *= dice[i].Sum();
+            ans %= 1000000007;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical90_058()
+    {
+        var NK = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var list = new List<int>();
+        String temp = Convert.ToString(NK[0]);
+        
+        for(int i = 0; i < 100000; i++)
+        {
+            int itemp = 0;
+            for(int j = 0; j <Convert.ToString(i) .Length; j++)
+            {
+                itemp += (Convert.ToString(i)[j] - '0');
+            }
+            list.Add((i + itemp) % 100000);
+        }
+        var time = Enumerable.Repeat(-1, 100000).ToList();
+        int pos = (int)NK[0], cnt = 0;
+        while(time[pos] == -1)
+        {
+            time[pos] = cnt;
+            pos = list[pos];
+            cnt++;
+        }
+        int cycle = cnt - time[pos];
+        if(NK[1] >= time[pos])
+        {
+            NK[1] = (NK[1] - time[pos]) % cycle + time[pos];
+        }
+        int ans = -1;
+        for(int i = 0; i < 100000; i++)
+        {
+            if(time[i] == NK[1]) ans = i;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void typical90_056()
+    {
+        var NS = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var huku = new (int, int)[NS[0]];
+        for(int i = 0; i < NS[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            huku[i] = (read[0], read[1]);
+        }
+        var dp = new bool[NS[0] + 1,NS[1] + 1];
+        dp[0, 0] = true;
+        for(int i = 0; i < NS[0]; i++)
+        {
+            for(int j = 0; j < NS[1]; j++)
+            {
+                if(dp[i, j] && j + huku[i].Item1 <= NS[1])
+                {
+                    dp[i + 1, j + huku[i].Item1] = true;
+                }
+                if(dp[i, j] && j + huku[i].Item2 <= NS[1])
+                {
+                    dp[i + 1, j + huku[i].Item2] = true;
+                }
+            }
+        }
+        var sb = new StringBuilder();
+        int now = NS[1];
+        for(int i = NS[0]; i >= 1; i--)
+        {
+            if(now - huku[i - 1].Item1 >= 0 && dp[i - 1, now - huku[i - 1].Item1])
+            {
+                sb.Append("A");
+                now -= huku[i - 1].Item1;
+            }
+            else if(now - huku[i - 1].Item2 >= 0 && dp[i - 1, now - huku[i - 1].Item2])
+            {
+                sb.Append("B");
+                now -= huku[i - 1].Item2;
+            }
+            
+        }
+        var ans = sb.ToString().ToCharArray();
+        Array.Reverse(ans);
+        if(ans.Length == NS[0])
+        Console.WriteLine(new String(ans));
+        else Console.WriteLine("Impossible");
+    }
+    public static void AGC036_A()
+    {
+        long S = long.Parse(Console.ReadLine());
+        long x1 = S;
+        long y1 = 0;
+        long x2 = 0;
+        long y2 = 0;
+        if(x1 <= 1000000000)
+        {
+            y2 = 1;
+        }
+        else
+        {
+            x1 = (long)Math.Ceiling(Math.Sqrt(S));
+            y2 = (long)Math.Ceiling((decimal)S / x1);
+            x2 = 1;
+            y1 = x1 * y2 - S;
+        }
+        Console.WriteLine($"0 0 {x1} {y1} {x2} {y2}");
+    }
+    /// <summary>
+    /// s
+    /// </summary>
+    public static void typical90_067()
+    {
+        var NK = Console.ReadLine().Split();
+        int K = int.Parse(NK[1]);
+        long temp10 = 0;
+        String temp = Convert.ToString(NK[0]);
+        while(K > 0)
+        {
+            temp10 = to10(Convert.ToString(temp));
+            String temp9 = to9(temp10);
+            temp = temp9;
+            K--;
+        }
+        if(temp != "")
+        Console.WriteLine(temp);
+        else Console.WriteLine(0);
+        long to10(String N )
+        {
+            long ans = 0, x = 1, size = N.Length;
+            for(int i = (int)size - 1; i >= 0; i--)
+            {
+                ans += 1 * (N[i] - '0') * x;
+                x *= 8;
+            }
+            return ans;
+        }
+        String to9(long N)
+        {
+            String ans = "";
+            while(N > 0)
+            {
+                if(N % 9 != 8)
+                ans = (N % 9) + ans;
+                else ans = '5' + ans;
+                N /= 9;
+            }
+            return ans;
+        }
+    }
+    public static void disco2020_C()
+    {
+        var HWK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int H = HWK[0];
+        int W = HWK[1];
+        int K = HWK[2];
+        var field = new char[H][];
+        var ans = new int[H, W];
+        int index = 0;
+        for(int i = 0; i < H; i++)
+        {
+            field[i] = Console.ReadLine().ToCharArray();
+        }
+        var cnt = new int[H];
+        for(int i = 0; i < H; i++)
+        {
+            
+            for(int j = 0; j < W; j++)
+            {
+                if(field[i][j] == '#')cnt[i]++;
+            }
+        }
+        var list = new List<int>();
+        for(int i = 0; i < H; i++)
+        {
+            if(cnt[i] >= 1) list.Add(i);
+        }
+        for(int i = 0; i < list.Count(); i++)
+        {
+            int v1 = 0, v2 = H - 1;
+            if(i >= 1) v1 = list.ElementAt(i - 1) + 1;
+            if(i < list.Count() - 1) v2 = list.ElementAt(i);
+            Solve(v1, v2);
+        }
+        for(int i = 0; i < H; i++)
+        {
+            var sb = new StringBuilder();
+            for(int j = 0; j < W; j++)
+            {
+                sb.Append($"{ans[i, j]} ");
+            }
+            Console.WriteLine(sb.ToString().TrimEnd());
+        }
+
+        void Solve(int cl, int cr)
+        {
+            var p = new List<int>();
+            for(int i = cl; i <= cr; i++)
+            {
+                for(int j = 0; j < W; j++)
+                {
+                    if(field[i][j]== '#')p.Add(j);
+                }
+            }
+            p = p.OrderBy(x => x).ToList();
+
+            for(int i = 0; i < p.Count(); i++)
+            {
+                int v1 = 0, v2 = W - 1;
+                if(i >= 1) v1 = p.ElementAt(i - 1) + 1;
+                if(i < p.Count() - 1)　v2 = p.ElementAt(i);
+                index++;
+
+                for(int j = cl; j <= cr; j++)
+                {
+                    for(int k = v1; k <= v2; k++)
+                    {
+                        ans[j, k] = index;
+                    }
+                }
+
+            }
+        }
+    }
+    public static void ABC151_D()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var S = new char[HW[0], HW[1]];
+        var list = new List<(int, int)>();
+        for(int i = 0; i < HW[0]; i++)
+        {
+            var read = Console.ReadLine().ToCharArray();
+            for(int j = 0; j < HW[1]; j++)
+            {
+                S[i,j] = read[j];
+                if(S[i, j] == '.')
+                {
+                    list.Add((i, j));
+                }
+            }
+        }
+        var ans = 0;
+        foreach(var v in list)
+        {
+            ans = Math.Max(ans, bfs(v.Item1, v.Item2));
+        }
+
+        Console.WriteLine(ans);
+        
+
+        int bfs(int y, int x)
+        {
+            var q = new Queue<(int, int)>();
+            q.Enqueue((y, x));
+            int temp = 0;
+            var cnt = new int[HW[0], HW[1]];
+            for(int i = 0; i < HW[0]; i++)
+            {
+                for(int j = 0; j < HW[1]; j++)
+                {
+                    cnt[i, j] = intMax;
+                }
+            }
+            cnt[y, x] = 0;
+            var move = new (int, int)[4]{(-1, 0),(1, 0),(0, 1),(0, -1)};
+            while(q.Count() != 0)
+            {
+                var now = q.Dequeue();
+                foreach(var v in move)
+                {
+                    int ny = now.Item1 + v.Item1, nx = now.Item2 + v.Item2;
+                    if(ny >= 0 && ny < HW[0] && nx >= 0 && nx < HW[1])
+                    {
+                        if(S[ny, nx] == '.' && cnt[ny, nx] > cnt[now.Item1, now.Item2] + 1)
+                        {
+                            q.Enqueue((ny, nx));
+                            cnt[ny, nx] = cnt[now.Item1, now.Item2] + 1;
+                            if(temp < cnt[ny, nx])
+                            {
+                                temp = cnt[ny, nx];
+                            }         
+                        }
+                    }
+                }
+            }
+            return temp;
+        }
+    }
+    public static void ABC167_D()
+    {
+        var NK = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var list = new List<int>();
+        
+        var start = 0;
+        int start_i = 0;
+        int index = 1;
+        var journey = new int[(int)NK[0]];
+        
+        while(journey[start] == 0)
+        {
+            journey[start] = index;
+            list.Add(A[start] - 1);
+            start = A[start] - 1;
+            index++;
+        }
+        
+        
+        start_i = journey[start] - 1;
+        int cycle = list.Count() - start_i;
+        
+        if(NK[1] < list.Count())
+        {
+            Console.WriteLine(list[(int)NK[1] - 1] + 1);
+        }
+        else
+        {
+            
+            long temp = (NK[1] - (long)start_i - 1) % cycle;
+            Console.WriteLine(list[(int)temp + start_i] + 1);
+
+        }
+    }
+    public static void ABC231_A()
+    {
+        int D = int.Parse(Console.ReadLine());
+        Console.WriteLine((double)D/100);
+    }
+    public static void ABC231_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new Dictionary<String, int>();
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine();
+            if(!list.ContainsKey(read))
+            {
+                list.Add(read, 1);
+            }
+            else
+            {
+                list[read]++;
+            }
+        }
+        list = list.OrderByDescending(x => x.Value).ToDictionary(key => key.Key, val => val.Value);
+        Console.WriteLine(list.ElementAt(0).Key);
+    }
+    public static void ABC231_C()
+    {
+        var NQ = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        Array.Sort(A);
+        for(int i = 0; i < NQ[1]; i++)
+        {
+            int x = int.Parse(Console.ReadLine());
+            int l = 0;
+            int r = NQ[0] - 1;
+            while(r - l > 1)
+            {
+                int mid = (l + r) / 2;
+                if(A[mid] > x)
+                {
+                    r = mid;
+                }
+                else
+                {
+                    l = mid;
+                }
+            }
+            if(l < NQ[0] - 1 && A[l + 1] < x)l++;
+            else if(A[l] == x) l--;
+            if(A[0] > x)Console.WriteLine(NQ[0]);
+            else Console.WriteLine(NQ[0] - (l + 1));
+        }
+    }
+    public static void ABC231_D()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var list = new Dictionary<int, int>();
+        var ok = true;
+        var uf = new UnionFind<int>();
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            if(list.ContainsKey(read[0]) && list.ContainsKey(read[1]))
+            {
+                if(uf.IsSame(read[0], read[1]))
+                {
+                    ok = false;
+                }
+            }
+            if(!list.ContainsKey(read[0]))
+            {
+                list.Add(read[0], 1);
+                uf.Add(read[0]);
+            }
+            else
+            {
+                list[read[0]]++;
+            }
+            if(!list.ContainsKey(read[1]))
+            {
+                list.Add(read[1], 1);
+                uf.Add(read[1]);
+            }
+            else
+            {
+                list[read[1]]++;
+            }
+            uf.Unite(read[0], read[1]);
+        }
+        int one = 0;
+        int two = 0;
+        
+        foreach(var i in list)
+        {
+            if(i.Value == 1)one++;
+            if(i.Value == 2)two++;
+            if(i.Value > 2)
+            {
+                ok = false;
+            }
+        }
+        if(two == NM[0] - 2 && one > 2) ok = false;
+        if(two > NM[0] || one > NM[0] || two + one > NM[0]) ok = false;
+        if(ok) Console.WriteLine("Yes");
+        else Console.WriteLine("No");
+    }
+    public static void ABC231_D_()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var list = new (int, int)[NM[0]];
+        for(int i = 0; i < NM[0]; i++)
+        {
+            list[i] = (-1, -1);
+        }
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read =Console.ReadLine().Split().Select(int.Parse).ToArray();
+            read[0]--;
+            read[1]--;
+            if(list[read[0]].Item1 == -1 && list[read[1]].Item2 == -1)
+            {
+                list[read[0]].Item1 = 1;
+                list[read[1]].Item1 = 1;
+            }
+            else if(list[read[0]].Item2 == -1 && list[read[1]].Item2 == -1)
+            {
+                
+            }
+        }
+    }
+    public static void ABC231_E_sub()
+    {
+        var NX = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = longMax;
+        var bai = A[1] / A[0];
+        for(int i = 0; i < NX[0]; i++)
+        {
+            long temp = 0;
+            long cnt = 0;
+            if(NX[1] % A[i] == 0)
+            {
+                temp = NX[1];
+            }
+            else
+            {
+                temp = Math.Abs(NX[1] - ((long)Math.Ceiling((decimal)NX[1]/A[i])*A[i])) + A[i] * (long)Math.Ceiling((decimal)NX[1]/A[i]);
+            }
+            int index = i;
+            while(temp != 0)
+            {
+                cnt += temp/A[index];
+                temp %= A[index];
+                index--;
+            }
+            ans = Math.Min(ans, cnt);
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC231_E()
+    {
+        var NX = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var memo = new Dictionary<long, long>();
+
+        long dfs(long x, int beg)
+        {
+            if(memo.ContainsKey(x) && memo.ElementAt(memo.Count - 1).Key　!= x) return memo[x];
+            if(beg == A.Length - 1) return x/A[A.Length - 1];
+            if(x == 0) return 0;
+            long crr = A[beg], nxt = A[beg + 1];
+            long r = x % nxt / crr;
+            long ans = dfs(x / nxt * nxt, beg + 1) + r;
+            if(r > 0) ans = Math.Min(ans, dfs((long)Math.Ceiling((decimal)x/nxt)*nxt, beg + 1) + (nxt/crr - r)); 
+            if(!memo.ContainsKey(x))
+            memo.Add(x, ans);
+            return ans;
+        }
+
+        Console.WriteLine(dfs(NX[1], 0));
+    }
+    public static void ABC231_F()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var B = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        
+    }
+    public static void tenka2019_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var S = Console.ReadLine();
+        int wcnt = 0;
+        int bcnt = 0;
+        for(int i = S.Length - 1;i >= 0; i--)
+        {
+            if(S[i] == '.')
+            {
+                wcnt++;
+            }
+            else if(S[i] == '#')
+            {
+                bcnt++;
+            }
+        }
+        int lb = 0;
+        int lh = 0;
+        int ans = wcnt;
+        
+        for(int i = 0; i < S.Length; i++)
+        {
+            if(S[i] == '#')
+            {
+                lb++;
+            }
+            else
+            {
+                lh++;
+            } 
+            ans = Math.Min(ans, lb + wcnt - lh);   
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void codefes2017C_C()
+    {
+        String s = Console.ReadLine();
+        int l = 0;
+        int r = s.Length - 1;
+        var ok = true;
+        int cnt = 0;
+        while(r > l)
+        {
+            if(s[l] != s[r])
+            {
+                if(s[l] != 'x' && s[r] != 'x')
+                {
+                    ok = false;
+                    break;
+                }
+                else if(s[l] == 'x')
+                {
+                    l++;
+                    cnt++;
+                }
+                else
+                {
+                    r--;
+                    cnt++;
+                }
+            }
+            else
+            {
+                l++;
+                r--;
+            }
+        }
+        if(ok) Console.WriteLine(cnt);
+        else Console.WriteLine(-1);
+    }
+    public static void ARC102_C()
+    {
+        var NK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        long ans = 0;
+        long cnt0 = 0;
+        for(int i = 1; i <= NK[0]; i++)
+        {
+            
+            if(i % NK[1] == 0) cnt0++;
+        }
+        ans += cnt0 * cnt0 * cnt0;
+        long cnt2 = 0;
+        if(NK[1] % 2 == 0)
+        {
+            for(int i = 1; i <= NK[0]; i++)
+            {
+                if(i % NK[1] == NK[1] / 2) cnt2++;               
+            }
+        }
+        ans += cnt2 * cnt2 * cnt2;
+        Console.WriteLine(ans);
+    }
+    public static void ABC231_E_sub2()
+    {
+        var NX = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        int N = (int)NX[0];
+        long X = NX[1];
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        
+        var cnt = new long[N];
+        for(int i = A.Length - 1; i >= 0; i--)
+        {
+            //i番目の硬貨でi桁円目を支払う時の枚数
+            cnt[i] = X / A[i];
+            X %= A[i];
+            //次の硬貨への倍数を格納(i番目の硬貨何枚でi + 1番目の硬貨に相当するか)
+            if(i - 1 >= 0) A[i] /= A[i - 1];
+        }
+        //dp[i, j] i番目の硬貨まででi桁目までの支払い方を決めたときの枚数
+        //         j = 0 おつりが出ないように払った時
+        //         j = 1 おつりが出るように繰り上げて支払うとき
+        var dp = new long[N + 1, 2];
+        for(int i = 0; i < dp.GetLength(0); i++)
+        {
+            for(int j = 0; j < dp.GetLength(1); j++)
+            {
+                dp[i, j] = longMax;
+            }
+        }
+
+        dp[0, 0] = 0;
+        //i番目でおつりがでるかでないかから
+        //i + 1番目でおつりがでるかでないかへの遷移を考え最小枚数を記録
+        for(int i = 0; i < N; i++)
+        {
+            long up = 0;
+            if(i != N - 1)
+            {
+                //i番目の硬貨でi桁目円を払う最大数
+                up = A[i + 1];
+            }
+            else
+            {
+                //一番大きい硬貨では次の効果への繰り上げは考えない
+                //大きい値を格納すれば計算時にMinではじかれる
+                up = longMax;
+            }
+            //i + 1番目の硬貨でi + 1桁円目をおつりがでないように払った時の枚数
+            // かつ　i 番目の硬貨でおつりが出ないように払っているとき
+            dp[i + 1, 0] = Math.Min(dp[i + 1, 0], dp[i, 0] + cnt[i]);
+            //前からの繰り上げがあるときupを超えないことを確認
+            if(cnt[i] + 1 < up)
+            {
+                //i + 1番目の硬貨でi + 1桁円目をおつりがでないように払った時の枚数
+                // かつ　i 番目の硬貨でおつりが出るように払っているとき
+                dp[i + 1, 0] = Math.Min(dp[i + 1, 0], dp[i, 1] + cnt[i] + 1);
+            }
+            //i番目の硬貨での支払がある時でないと繰り上がりはおこらない
+            if(cnt[i] > 0)
+            {
+                //i + 1番目の硬貨でi + 1桁円目をおつりがでるように払った時の枚数
+                // かつ　i 番目の硬貨でおつりが出ないように払っているとき
+                dp[i + 1, 1] = Math.Min(dp[i + 1, 1], dp[i, 0] + (up - cnt[i]));
+            }
+                //i + 1番目の硬貨でi + 1桁円目をおつりがでるように払った時の枚数
+                // かつ　i 番目の硬貨でおつりが出るように払っているとき
+            dp[i + 1, 1] = Math.Min(dp[i + 1, 1], dp[i, 1] + (up - (cnt[i] + 1)));
+        }
+        Console.WriteLine(dp[N, 0]);
+    }
+    public static void ABC064_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var S = Console.ReadLine();
+        int lcnt = 0;
+        int rcnt = 0;
+        var sb = new StringBuilder();
+        sb.Append(S);
+        for(int i = 0; i < N; i++)
+        {
+            if(S[i] == '(')
+            {
+                lcnt++;
+            }
+            else if(S[i] == ')')
+            {
+                rcnt++;
+            }
+            if(rcnt > lcnt)
+            {
+                sb.Insert(0, "(");
+                lcnt++;
+            }
+            else if(i == N - 1 && rcnt < lcnt)
+            {
+                for(int j = 0; j < lcnt - rcnt; j++)
+                {
+                    sb.Append(")");
+                }
+            }
+        }
+        Console.WriteLine(sb.ToString());
+    }
+    /// <summary>
+    /// ワーシャルフロイド
+    /// </summary>
+    public static void ABC079_D()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var c = new int[10, 10];
+        for(int i = 0; i < 10; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            for(int j = 0; j < 10; j++)
+            {
+                c[i, j] = read[j];
+            }
+        }
+        for(int k = 0; k < 10; k++)
+        {
+            for(int i = 0; i < 10; i++)
+            {
+                for(int j = 0; j < 10; j++)
+                {
+                    c[i, j] = Math.Min(c[i, j], c[i, k] + c[k, j]);
+                }
+            }
+        }
+        var f = new int[HW[0], HW[1]];
+        int cost = 0;
+        for(int i = 0; i < HW[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            for(int j = 0; j < HW[1]; j++)
+            {
+                f[i, j] = read[j];
+                if(f[i, j] != -1 && f[i, j] != 1)
+                {
+                    cost += c[f[i, j], 1];
+                }
+            }
+        }
+        Console.WriteLine(cost);
+    }
+    public static void ABC084_D()
+    {
+        int Q = int.Parse(Console.ReadLine());
+        var prime = new int[100001];
+        for(int i = 2; i <= 100000; i++)
+        {
+            int temp = i;
+            int multi = 2;
+            while(temp <= 100000)
+            {
+                prime[temp]++;
+                temp = i * multi;
+                multi++;
+            }
+        }
+        var primesum = new int[100001];
+        int cnt = 0;
+        for(int i = 2; i <= 100000; i++)
+        {
+            if(i % 2 == 1 && prime[i] < 2 && prime[(i + 1) / 2] < 2)
+            {
+                cnt++;
+            }
+            primesum[i] = cnt;
+        }
+        for(int i = 0; i < Q; i++)
+        {
+            int ans = 0;
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            ans = primesum[read[1]] - primesum[read[0] - 1];
+            Console.WriteLine(ans);
+        }
+    }
+    public static void AGC005_A()
+    {
+        var X = Console.ReadLine();
+        var ans = X.Length;
+        int tcnt = 0;
+        int scnt = 0;
+        for(int i = 0; i < X.Length; i++)
+        {
+            if(X[i] == 'S')
+            {
+                scnt++;
+            }
+            else if(scnt > 0 && X[i] == 'T')
+            {
+                ans -= 2;
+                scnt--;
+            }
+            else if(X[i] == 'T')
+            {
+                tcnt++;
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC161_D()
+    {
+        int K = int.Parse(Console.ReadLine());
+        int cnt = 1;
+        var lunlun = new Queue<long>();
+        for(int i = 1; i < 10; i++)
+        {
+            lunlun.Enqueue(i);
+        }
+        long temp = 0;
+        while(cnt <= K)
+        {
+            temp = lunlun.Dequeue();
+            if(temp % 10 != 0)
+            {
+                lunlun.Enqueue(temp * 10 + temp % 10 - 1);
+            }
+            lunlun.Enqueue(temp * 10 + temp % 10);
+            if(temp % 10 != 9)
+            {
+                lunlun.Enqueue(temp * 10 + temp % 10 + 1);
+            }
+            cnt++;
+        }
+        Console.WriteLine(temp);
+    }
+    public static void ABC153_E()
+    {
+        var HN = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var attack = new (int, int)[HN[1]];
+        for(int i = 0; i < HN[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            attack[i] = (read[0], read[1]);
+        }
+        var dp = new int[HN[1] + 1, HN[0] + 1];
+        for(int i = 0; i < dp.GetLength(0); i++)
+        {
+            for(int j = 0; j < dp.GetLength(1); j++)
+            {
+                dp[i, j] = intMax;
+            }
+        }
+        dp[0, 0] = 0;
+        for(int i = 0; i < HN[1]; i++)
+        {
+            for(int j = 0; j <= HN[0]; j++)
+            {
+                dp[i + 1, j] = Math.Min(dp[i + 1, j], dp[i, j]);
+                dp[i + 1, Math.Min(HN[0], j + attack[i].Item1)] = Math.Min(dp[i + 1, Math.Min(HN[0], j + attack[i].Item1)], dp[i + 1, j] + attack[i].Item2);
+            }
+        }
+
+        Console.WriteLine(dp[HN[1], HN[0]]);
+    }
+    /// <summary>
+    /// 組み合わせ(mod)
+    /// </summary>
+    public static void ABC156_D()
+    {
+        var nab = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long mod = 1000000007;
+        long ans = pow(2, nab[0]) - 1;
+        long nCa = nCk(nab[0], nab[1]);
+        long nCb = nCk(nab[0], nab[2]);
+        ans = ans - nCa - nCb;
+        while(ans < 0)
+        {
+            ans += mod;
+        }
+
+        Console.WriteLine(ans);
+
+        long pow(long x, long n)
+        {
+            long ret = 1;
+            while(n > 0)
+            {
+                if((n & 1) > 0) ret *= x;
+                x *= x;
+                x %= mod;
+                ret %= mod;
+                n = n >> 1;
+            }
+            return ret;
+        }
+
+        long nCk(long n, long k)
+        {
+            if (n < k) return 0;
+            if (n == k) return 1;
+
+            long x = 1;
+            long y = 1;
+            for (long i = 0; i < k; i++)
+            {
+                x = x * (n - i);
+                x %= mod;
+            }
+            for(long i = 0; i < k; i++)
+            {
+                y = y * (i + 1);
+                y %= mod;
+            }
+            y = pow(y, 1000000007 - 2);
+            long ret = x * y;
+            ret %= mod;
+            return ret;
+        }
+    }
+    public static void ABC088_D()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var s = new char[HW[0], HW[1]];
+        int black = 0;
+        for(int i = 0; i < HW[0]; i++)
+        {
+            var read = Console.ReadLine().ToCharArray();
+            for(int j = 0; j < HW[1]; j++)
+            {
+                s[i, j] = read[j];
+                if(s[i, j] == '#') black++;  
+            }
+        }
+        var move = new (int, int)[4]{(-1, 0),(1, 0),(0, -1),(0, 1)};
+        var cnt = new int[HW[0], HW[1]];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                cnt[i, j] = intMax;
+            }
+        }
+        var q = new Queue<(int, int)>();
+        q.Enqueue((0, 0));
+        cnt[0, 0] = 0;
+        while(q.Count() != 0)
+        {
+            var now = q.Dequeue();
+            foreach(var v in move)
+            {
+                int ny = now.Item1 + v.Item1;
+                int nx = now.Item2 + v.Item2;
+                if(ny >= 0 && ny < HW[0] && nx >= 0 && nx < HW[1] && s[ny, nx] != '#')
+                {
+                    if(cnt[ny, nx] == intMax)
+                    {
+                        cnt[ny, nx] = cnt[now.Item1, now.Item2] + 1;
+                        q.Enqueue((ny, nx));
+                    }
+                }
+            }
+        }
+        if(cnt[HW[0] - 1, HW[1] - 1] == intMax)Console.WriteLine(-1);
+        else Console.WriteLine(HW[0] * HW[1] - black - cnt[HW[0] - 1, HW[1] - 1] - 1);
+    }
+    public static void ABC145_D()
+    {
+        var XY = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long mod = 1000000007;
+        if((XY[0] + XY[1]) % 3 != 0)
+        {
+            Console.WriteLine(0);
+            return;
+        }
+        
+        long n = (2 * XY[1] - XY[0] )/ 3;
+        if(n < 0)
+        {
+            Console.WriteLine(0);
+            return;
+        }
+        long m = (XY[0] - n) / 2;
+        if(m < 0)
+        {
+            Console.WriteLine(0);
+            return;
+        }
+        long ans = nCk(n + m, n);
+        Console.WriteLine(ans);
+        long nCk(long n, long k)
+        {
+            if (n < k) return 0;
+            if (n == k) return 1;
+
+            long x = 1;
+            long y = 1;
+            for (long i = 0; i < k; i++)
+            {
+                x = x * (n - i);
+                x %= mod;
+            }
+            for(long i = 0; i < k; i++)
+            {
+                y = y * (i + 1);
+                y %= mod;
+            }
+            y = pow(y, 1000000007 - 2);
+            long ret = x * y;
+            ret %= mod;
+            return ret;
+        }
+        long pow(long x, long n)
+        {
+            long ret = 1;
+            while(n > 0)
+            {
+                if((n & 1) > 0) ret *= x;
+                x *= x;
+                x %= mod;
+                ret %= mod;
+                n = n >> 1;
+            }
+            return ret;
+        }
+    }
+    public static void ABC112_D()
+    {
+        var NM = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = 1;
+        if(NM[0] == 1)
+        {
+            Console.WriteLine(NM[1]);
+            return;
+        }
+        for(long i = 1; i <= NM[1] / (NM[0] - 1); i++)
+        {
+            long temp = NM[1] - i * (NM[0] - 1);
+            if(temp == 0) continue;
+            if(temp % i == 0)
+            {
+                ans = Math.Max(ans, i);
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void diverta20192_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var list = new Dictionary<(int, int), int>();
+        var ball = new (int, int)[N];
+        for(int i = 0; i < N; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            ball[i] = (read[0], read[1]);
+        }
+
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < N; j++)
+            {
+                if(i == j) continue;
+                int dx = ball[i].Item1 - ball[j].Item1;
+                int dy = ball[i].Item2 - ball[j].Item2;
+                if(!list.ContainsKey((dx, dy)))
+                {
+                    list.Add((dx, dy), 1);
+                }
+                else
+                {
+                    list[(dx, dy)]++;
+                }
+            }
+        }
+        int ans = 0;
+        if(list.Count() > 1)
+        {
+            ans = N - list.Values.Max();
+        }
+        else
+        {
+            ans = 1;
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC160_E()
+    {
+        var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var p = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var q = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var r = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        Array.Sort(p);
+        p = p.Reverse().ToArray();
+        Array.Sort(q);
+        q = q.Reverse().ToArray();
+        Array.Sort(r);
+        r = r.Reverse().ToArray();
+        var list = new List<long>();
+        for(int i = 0; i < read[0]; i++)
+        {
+            list.Add(p[i]);
+        }
+        for(int i = 0; i < read[1]; i++)
+        {
+            list.Add(q[i]);
+        }
+        list = list.OrderBy(x => x).ToList();
+        for(int i = 0; i < Math.Min(list.Count(), read[4]); i++)
+        {
+            if(list[i] < r[i])
+            {
+                list[i] = r[i];
+            }
+        }
+        long ans = list.Sum();
+        Console.WriteLine(ans);
+    }
+    public static void ARC067_D()
+    {
+        var NAB = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var X = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long ans = 0;
+        for(int i = 0; i < NAB[0] - 1; i++)
+        {
+            if((X[i + 1] - X[i]) * NAB[1] > NAB[2])
+            {
+                ans += NAB[2];
+            }
+            else
+            {
+                ans += (X[i + 1] - X[i]) * NAB[1];
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC217_D()
+    {
+        var LQ = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var set = new Set<int>();
+        set.Add(0);
+        set.Add(LQ[0]);
+        for(int i = 0; i < LQ[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            int ans = 0;
+            if(read[0] == 1)
+            {
+                set.Add(read[1]);
+            }
+            else
+            {
+                int index = set.LowerBound(read[1]);
+                ans = set[index] - set[index - 1];
+                Console.WriteLine(ans);
+            }
+        }
+    }
+    public static void APC001_B()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var a = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var b = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        bool ok = true;
+        if(a.Sum() > b.Sum())
+        {
+            ok = false;
+        }
+        long asum = 0;
+        long bcan = 0;
+        for(int i = 0; i < N; i++)
+        {
+            if(a[i] < b[i])
+            {
+                bcan += (b[i] - a[i]) / 2;
+            }
+            else
+            {
+                asum += a[i] - b[i];
+            }
+        }
+        if(asum > bcan)
+        {
+            ok = false;
+        }
+        if(ok) Console.WriteLine("Yes");
+        else Console.WriteLine("No");
+    }
+    public static void AGC023_A()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var sum = new long[N + 1];
+        var list = new Dictionary<long, long>();
+        for(int i = 0; i < N; i++)
+        {
+            sum[i + 1] = sum[i] + A[i];
+            if(!list.ContainsKey(sum[i + 1]))
+            {
+                list.Add(sum[i + 1], 1);
+            }
+            else
+            {
+                list[sum[i + 1]]++;
+            }
+        }
+        long ans = 0;
+        foreach(var v in list)
+        {
+            if(v.Key == 0)
+            {
+                ans += v.Value;
+            }
+            if(v.Value > 1)
+            {
+                ans += (v.Value - 1) * v.Value / 2;
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void diverta2019_D()
+    {
+        long N = long.Parse(Console.ReadLine());
+        long ans = 0;
+        for(int i = 1; i <= Math.Sqrt(N); i++)
+        {
+            if(((N - i) / i) != 0 && N / ((N - i) / i) == N % ((N - i) / i))
+            {
+                ans += (N - i) / i;
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC114_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        int ans = 0;
+        dfs("3");
+        dfs("5");
+        dfs("7");
+        Console.WriteLine(ans);
+        void dfs(String n)
+        {
+            int three = 0;
+            int five = 0;
+            int seven = 0;
+            if(long.Parse(n) > N)
+            {
+                return;
+            }
+            for(int i = 0; i < n.Length; i++)
+            {
+                if(n[i] == '3')
+                {
+                    three++;
+                }
+                else if(n[i] == '5')
+                {
+                    five++;
+                }
+                else
+                {
+                    seven++;
+                }
+            }
+            if(three > 0 && five > 0 && seven > 0)
+            {
+                ans++;
+            }
+            dfs(n + '3');
+            dfs(n + '5');
+            dfs(n + '7');
+        }
+    }
+    public static void ABC152_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        long ans = 0;
+        var table = new long[10, 10];
+        for(int i = 1; i <= N; i++)
+        {
+            String num = Convert.ToString(i);
+            int first = num[0] - '0';
+            int last = num[num.Length - 1] - '0';
+            table[first, last]++;
+        }
+        for(int i = 1; i < 10; i++)
+        {
+            for(int j = 1; j < 10; j++)
+            {
+                ans += table[i, j] * table[j, i];
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void codefes2016A_C()
+    {
+        String s = Console.ReadLine();
+        long K = long.Parse(Console.ReadLine());
+        var ans = new char[s.Length];
+        for(int i = 0; i < s.Length; i++)
+        {
+            if(s[i] != 'a' && K >= (26 - (s[i] - 'a')))
+            {
+                ans[i] = 'a';
+                K -= (26 - (s[i] - 'a'));
+            }
+            else
+            {
+                ans[i] = s[i];
+            }
+        }
+        if(K > 0)
+        {
+            ans[ans.Length - 1] = Convert.ToChar((ans[ans.Length - 1] + K % 26));
+        }
+        Console.WriteLine(new String(ans));
+    }
+    public static void ABC216_D()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var a = new Stack<int>[NM[1]];
+        a = a.Select(x => new Stack<int>()).ToArray();
+        var top = new List<int>[NM[0] + 1];
+        top = top.Select(x => new List<int>()).ToArray();
+        var s = new Stack<int>();
+        for(int i = 0; i < NM[1]; i++)
+        {
+            int k = int.Parse(Console.ReadLine());
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            read = read.Reverse().ToArray();
+            for(int j = 0; j < read.Length; j++)
+            {
+                a[i].Push(read[j]);
+            }
+            int color = a[i].Peek();
+            top[color].Add(i);
+            if(top[color].Count() == 2)
+            {
+                s.Push(color);
+            }
+        }
+        int cnt = 0;
+        while(s.Count != 0)
+        {
+            int now = s.Pop();
+            cnt++;
+            int one = top[now].ElementAt(0);
+            int two = top[now].ElementAt(1);
+            top[now].RemoveAt(0);
+            top[now].RemoveAt(0);
+            a[one].Pop();
+            if(a[one].Count != 0)
+            {
+                int ncolor = a[one].Peek();
+                top[ncolor].Add(one);
+                if(top[ncolor].Count == 2)
+                {
+                    s.Push(ncolor);
+                }
+            }
+            a[two].Pop();
+            if(a[two].Count != 0)
+            {
+                int ncolor = a[two].Peek();
+                top[ncolor].Add(two);
+                if(top[ncolor].Count == 2)
+                {
+                    s.Push(ncolor);
+                }
+            }
+        }
+        if(cnt == NM[0]) Console.WriteLine("Yes");
+        else Console.WriteLine("No");
+    }
+    public static void ABC129_D()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var f = new char[HW[0]][];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            f[i] = Console.ReadLine().ToCharArray();
+        }
+        var tate = new int[HW[0]][];
+        tate = tate.Select(x => new int[HW[1]]).ToArray();
+        var yoko = new int[HW[0]][];
+        yoko = yoko.Select(x => new int[HW[1]]).ToArray();
+        for(int i = 0; i < HW[0]; i++)
+        {
+            int index = 0;
+            while(index < HW[1])
+            {
+                int temp = index;
+                while(index != HW[1] && f[i][index] != '#')
+                {
+                    index++;
+                }
+                for(int j = temp; j < index; j++)
+                {
+                    yoko[i][j] = index - temp;
+                }
+                while(index != HW[1] && f[i][index] != '.')
+                {
+                    index++;
+                }
+            }
+        }
+        for(int i = 0; i < HW[1]; i++)
+        {
+            int index = 0;
+            while(index < HW[0])
+            {
+                int temp = index;
+                while(index != HW[0] && f[index][i] != '#')
+                {
+                    index++;
+                }
+                for(int j = temp; j < index; j++)
+                {
+                    tate[j][i] = index - temp;
+                }
+                while(index != HW[0] && f[index][i] != '.')
+                {
+                    index++;
+                }
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < HW[0]; i++)
+        {
+            for(int j = 0; j < HW[1]; j++)
+            {
+                if(f[i][j] != '#')
+                ans = Math.Max(ans, tate[i][j] + yoko[i][j] - 1);
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ARC068_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        Array.Sort(A);
+        var list = new Dictionary<int, int>();
+        for(int i = 0; i < N; i++)
+        {
+            if(!list.ContainsKey(A[i]))
+            {
+                list.Add(A[i], 1);
+            }
+            else
+            {
+                list[A[i]]++;
+            }
+        }
+        list = list.OrderBy(x => x.Value).ThenBy(x => x.Key).ToDictionary(x => x.Key, y => y.Value);
+        if(list.Count % 2 == 0)
+        {
+            Console.WriteLine(list.Count() - 1);
+        }
+        else
+        {
+            Console.WriteLine(list.Count());
+        }
+    }
+    public static  void AGC034_B()
+    {
+        String s = Console.ReadLine();
+        long cnt = 0;
+        var bc = new List<char>();
+        for(int i = s.Length - 1; i >= 0; i--)
+        {
+            if(bc.Count != 0 && bc[bc.Count() - 1] == 'C' && s[i] == 'B')
+            {
+                bc.Add('B');
+            }
+            else if(bc.Count() != 0 && bc[bc.Count() - 1] == 'B' && s[i] == 'C')
+            {
+                bc.Add('C');
+            }
+            else if(bc.Count() == 0 && s[i] == 'C')
+            {
+                bc.Add('C');
+            }
+            else if(s[i] == 'A' && bc.Count % 2 == 0)
+            {
+                cnt += (long)bc.Count / 2;
+            }
+            else
+            {
+                bc.Clear();
+                if(s[i] == 'C')
+                {
+                    bc.Add('C');
+                }
+            } 
+        }
+        Console.WriteLine(cnt);
+    }
+    public static void JOI006_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        int m = int.Parse(Console.ReadLine());
+        var card = Enumerable.Range(1, 2 * N).ToArray();
+        var temp = Enumerable.Range(1, 2 * N).ToArray();
+        for(int i = 0; i < m; i++)
+        {
+            int read = int.Parse(Console.ReadLine());
+            if(read == 0)
+            {
+                var topharf = new int[N];
+                var downharf = new int[N];
+                for(int j = 0; j < 2 * N; j++)
+                {
+                    if(j < N)
+                    {
+                        topharf[j] = temp[j];
+                    }
+                    else
+                    {
+                        downharf[j - N] = temp[j];
+                    }
+                }
+                for(int j = 0; j < 2 * N; j++)
+                {
+                    if(j % 2 == 0)
+                    {
+                        temp[j] = topharf[j / 2];
+                    }
+                    else
+                    {
+                        temp[j] = downharf[j / 2];
+                    }
+                }
+            }
+            else
+            {
+                var harf = new int[read];
+                for(int j = 0; j < read; j++)
+                {
+                    harf[j] = temp[j];
+                }
+                for(int j = 0; j < 2 * N; j++)
+                {
+                    if(j < 2 * N - read)
+                    {
+                        temp[j] = temp[j + read];
+                    }
+                    else
+                    {
+                        temp[j] = harf[j - (2 * N - read)];
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < 2 * N; i++)
+        {
+            Console.WriteLine(temp[i]);
+        }
+    }
+    public static void ABC232_A()
+    {
+        String s = Console.ReadLine();
+        int ans = (s[0] - '0') * (s[2] - '0');
+        Console.WriteLine(ans);
+    }
+    public static void ABC232_B()
+    {
+        var s = Console.ReadLine();
+        var t = Console.ReadLine();
+        var ok = true;
+        for(int i = 0; i < s.Length; i++)
+        {
+            int temp = (((t[0] - s[0]) + 26) % 26);
+            if(i >= 1)
+            {
+                if(((s[i] + temp%26) <= 'z' && (s[i] + temp % 26) != t[i]))
+                {
+                    ok = false;
+                }
+                else if((s[i] + temp%26) > 'z' &&('a' + (s[i] + temp%26 - 'z' - 1)) != t[i])
+                {
+                    ok = false;
+                }
+            }
+        }
+        if(ok) Console.WriteLine("Yes");
+        else Console.WriteLine("No");
+    }
+    public static void ABC232_C()
+    {
+        var NM = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var A = new int[NM[0], NM[0]];
+        var B = new int[NM[0], NM[0]];
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            A[read[0] - 1, read[1] - 1] = 1;
+            A[read[1] - 1, read[0] - 1] = 1;
+        }
+        for(int i = 0; i < NM[1]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            B[read[0] - 1, read[1] - 1] = 1;
+            B[read[1] - 1, read[0] - 1] = 1;
+        }
+        var P = Enumerable.Range(0, NM[0]).ToArray();
+        
+        do
+        {
+            var ok = true;
+            for(int i = 0; i < NM[0]; i++)
+            {
+                for(int j = 0; j < NM[0]; j++)
+                {
+                    if(i == j)continue;
+                    if(A[i, j] == 1 && B[P[i],P[j]] == 0)
+                    {
+                        ok = false;
+                    }
+                    if(A[i, j] == 0 && B[P[i], P[j]] == 1)
+                    {
+                        ok = false;
+                    }
+                }
+            }
+            if(ok)
+            {
+                Console.WriteLine("Yes");
+                return;
+            }
+
+        }while(NextPermutation.Next_Permutation(P));
+        Console.WriteLine("No");
+
+    }
+    /// <summary>
+    /// 経路探索、bfs
+    /// </summary>
+    public static void ABC232_D()
+    {
+        var HW = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var f = new char[HW[0]][];
+        var cnt = new int[HW[0], HW[1]];
+        for(int i = 0; i < HW[0]; i++)
+        {
+            f[i] = Console.ReadLine().ToCharArray();
+        }
+        cnt[0, 0] = 1;
+        var q = new Queue<(int, int)>();
+        q.Enqueue((0, 0));
+        var move = new (int, int)[2]{(1, 0),(0, 1)};
+        int ans = 1;
+        while(q.Count != 0)
+        {
+            var now = q.Dequeue();
+            foreach(var v in move)
+            {
+                int ny = now.Item1 + v.Item1;
+                int nx = now.Item2 + v.Item2;
+                if(ny >= 0 && ny < HW[0] && nx >= 0 && nx < HW[1] && f[ny][nx] != '#' && cnt[ny,nx] < cnt[now.Item1, now.Item2] + 1)
+                {
+                    cnt[ny, nx] = Math.Max(cnt[ny, nx], cnt[now.Item1, now.Item2] + 1);
+                    q.Enqueue((ny, nx));
+                    ans = Math.Max(ans, cnt[ny, nx]);
+                }
+            }
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC232_E()
+    {
+        var HWK = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int H = HWK[0];
+        int W = HWK[1];
+        int K = HWK[2];
+        var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int x1 = read[0];
+        int y1 = read[1];
+        int x2 = read[2];
+        int y2 = read[3];
+        //long ans = 0;
+        for(int i = 0; i < K; i++)
+        {
+            //int yoko = 1;
+            if(i > 0 && i % 2 == 0)
+            {
+                
+            }
+        }
+    }
+    public static void ABC115_D()
+    {
+        var NX = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        
+        var paty = new long[NX[0] + 1];
+        var bread = new long[NX[0] + 1];
+        var burger = new long[NX[0] + 1];
+        paty[0] = 1;
+        for(int i = 0; i < NX[0]; i++)
+        {
+            paty[i + 1] = paty[i] * 2 + 1;
+            bread[i + 1] = bread[i] * 2 + 2;
+        }
+        for(int i = 0; i <= NX[0]; i++)
+        {
+            burger[i] = paty[i] + bread[i];
+        }
+        Console.WriteLine(eat((int)NX[0], NX[1]));
+        long eat(int N, long X)
+        {
+            if(N == 0)
+            {
+                if(X > 0) return 1;
+                else return 0;
+            }
+            if(X <= burger[N - 1] + 1)
+            {
+                return eat(N - 1, X - 1);
+            }
+            else
+            {
+                return paty[N - 1] + 1 + eat(N - 1, X - burger[N - 1] - 2);
+            }
+        }
+        
+    }
+    public static void ABC228_A()
+    {
+        var STX = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        if(STX[1] - STX[0] < 0)
+        {
+            STX[1] += 24;
+        }
+        if(STX[2] - STX[0] < 0)
+        {
+            STX[2] += 24;
+        }
+        if(STX[0] <= STX[2] && STX[2] < STX[1])
+        {
+            Console.WriteLine("Yes");
+        }
+        else
+        {
+            Console.WriteLine("No");
+        }
+    }
+    public static void panasonic2020_D()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var s = new[]{"a"};
+        for(int i = 2; i <= N; i++)
+        {
+            s = s.SelectMany(Nexts).ToArray();
+        }
+        s = s.OrderBy(x => x).ToArray();
+        foreach(var a in s)
+        {
+            Console.WriteLine(a);
+        }
+        IEnumerable<string> Nexts(string x)
+        {
+            var maxChar = (char)(x.Max() + 1);
+            for(char i = 'a'; i <= maxChar; i++)
+            {
+                yield return x + i;
+            }
+        }
+    }
+    public static void ABC196_D()
+    {
+        var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int H = read[0];
+        int W = read[1];
+        int A = read[2];
+        int B = read[3];
+        int ans = 0;
+        dfs(0, 0, A, B);
+        Console.WriteLine(ans);
+
+        void dfs(int i, int bit, int a, int b)
+        {
+            //全箇所敷き詰められたらans +1;
+            if(i == H * W)
+            {
+                ans++;
+                return;
+            }
+            //当該箇所がすでに埋まっていれば何もせず次の箇所へ
+            if(((bit >> i) & 1) == 1)
+            {
+                dfs(i + 1, bit, a, b);
+                return;
+            }
+            //以下当該箇所が空いているとき
+
+            //Bのタイルが余っているとき当該箇所をのbitを１にして次へ
+            if(b > 0)
+            {
+                dfs(i + 1, bit | (1 << i), a, b - 1);
+            }
+            //Aのタイルが余っているとき
+            if(a > 0)
+            {
+                //一つ横が空いていれば横向きに敷き詰め
+                if(i % W != W - 1 && (bit & (1 << i + 1)) == 0)
+                {
+                    dfs(i + 1, bit | (1 << i) | (1 << (i + 1)), a - 1, b);
+                }
+                //一つ下が空いていれば縦向きに敷き詰め
+                if(i + W < H * W)
+                {
+                    dfs(i + 1, bit | (1 << i) | (1 << (i + W)), a - 1, b);
+                }
+            }
+
+        }
+    } 
+    public static void tenka1_C_sub()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = new long[N];
+        for(int i = 0; i < N; i++)
+        {
+            A[i] = long.Parse(Console.ReadLine());
+        }
+        Array.Sort(A);
+        var list1 = new List<long>();
+        var list2 = new List<long>();
+        list1.Add(A[A.Length - 1]);
+        list2.Add(A[0]);
+        int l = 0;
+        int r = A.Length - 2;
+        while(list1.Count() < A.Length)
+        {
+            long dl = 0;
+            long dr = 0;
+            if(list1.Count() % 2 == 1)
+            {
+                dl = Math.Abs(A[l] - list1[0]);
+                dr = Math.Abs(A[l] - list1[list1.Count() - 1]);
+                if(dl < dr)
+                {
+                    list1.Add(A[l]);
+                }
+                else if(list1.Count() == 1)
+                {
+                    list1.Add(A[l]);
+                }
+                else
+                {
+                    list1.Insert(0, A[l]);
+                }
+                l++;
+            }
+            else
+            {
+                dl = Math.Abs(A[r] - list1[0]);
+                dr = Math.Abs(A[r] - list1[list1.Count() - 1]);
+                if(dl < dr)
+                {
+                    list1.Add(A[r]);
+                }
+                else
+                {
+                    list1.Insert(0, A[r]);
+                }
+                r--;
+            }
+        }
+        l = 1;
+        r = A.Length - 1;
+        while(list2.Count() < A.Length)
+        {
+            long dl = 0;
+            long dr = 0;
+            if(list2.Count() % 2 == 0)
+            {
+                dl = Math.Abs(A[l] - list2[0]);
+                dr = Math.Abs(A[l] - list2[list2.Count() - 1]);
+                if(dl < dr)
+                {
+                    list2.Add(A[l]);
+                }
+                else
+                {
+                    list2.Insert(0, A[l]);
+                }
+                l++;
+            }
+            else
+            {
+                dl = Math.Abs(A[r] - list2[0]);
+                dr = Math.Abs(A[r] - list2[list2.Count() - 1]);
+                if(dl < dr)
+                {
+                    list2.Add(A[r]);
+                }
+                else if(list2.Count() == 1)
+                {
+                    list2.Add(A[r]);
+                }
+                else
+                {
+                    list2.Insert(0, A[r]);
+                }
+                r--;
+            }
+        }
+
+        long sum1 = 0;
+        long sum2 = 0;
+        for(int i = 0; i < A.Length - 1; i++)
+        {
+            sum1 += Math.Abs(list1[i + 1] - list1[i]);
+            sum2 += Math.Abs(list2[i + 1] - list2[i]);
+        }
+        Console.WriteLine(Math.Max(sum1, sum2));
+    }   
+    public static void tenka1_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = new long[N];
+        for(int i = 0; i < N; i++)
+        {
+            A[i] = long.Parse(Console.ReadLine());
+        }
+        Array.Sort(A);
+        var list1 = new long[N];
+        var list2 = new long[N];
+        int l = 0;
+        int r = N - 1;
+        for(int i = 1; i < N; i += 2)
+        {
+            list1[i] = A[l++];
+            list2[i] = A[r--];
+        }
+        l = N - 1;
+        r = 0;
+        for(int i = 2; i < N; i += 2)
+        {
+            list1[i] = A[l--];
+            list2[i] = A[r++];
+        }
+        list1[0] = A[l];
+        list2[0] = A[r];
+        long sum1 = 0;
+        long sum2 = 0;
+        for(int i = 0; i < A.Length - 1; i++)
+        {
+            sum1 += Math.Abs(list1[i + 1] - list1[i]);
+            sum2 += Math.Abs(list2[i + 1] - list2[i]);
+        }
+        Console.WriteLine(Math.Max(sum1, sum2));
+        
+    }
+    public static void ARC100_C()
+    {
+        int N = int.Parse(Console.ReadLine());
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        long med = 0;
+        var B = new long[N];
+        for(int i = 0; i < N; i++)
+        {
+            B[i] = A[i] - i;
+        }
+        Array.Sort(B);
+        if(N % 2 == 0)
+        {
+            med = (B[N / 2 - 1] + B[N / 2]) / 2;
+        }
+        else
+        {
+            med = B[N / 2];
+        }
+        long ans = 0;
+        for(int i = 0; i < N; i++)
+        {
+            ans += Math.Abs(A[i] - (med + i));
+        }
+        Console.WriteLine(ans);
+
+    }
+    public static void ABC196_A()
+    {
+        var ab = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var cd = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        Console.WriteLine(ab[1] - cd[0]);
+    }
+    public static void ABC233_A()
+    {
+        var XY = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int ans = (int)Math.Ceiling(((decimal)XY[1] - XY[0]) / 10);
+        if(ans > 0)
+        Console.WriteLine(ans);
+        else Console.WriteLine(0);
+    }
+    public static void ABC233_B()
+    {
+        var LR = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        String s = Console.ReadLine();
+        String pre = s.Substring(0, LR[0] - 1);
+        String reverse = s.Substring(LR[0] - 1, (LR[1] - LR[0] + 1));
+        String suf = s.Substring(LR[1], s.Length - LR[1]);
+        String ans = pre + new String(reverse.Reverse().ToArray()) + suf;
+        Console.WriteLine(ans);
+    }
+    public static void ABC233_C()
+    {
+        var NX = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var a = new long[NX[0]][];
+        Dictionary<long, int>[] list = new Dictionary<long, int>[NX[0]];
+        for(int i = 0; i < NX[0]; i++)
+        {
+            var read = Console.ReadLine().Split().Select(long.Parse).ToArray();
+            a[i] = new long[read[0]];
+            list[i] = new Dictionary<long, int>();
+            for(int j = 0; j < read[0]; j++)
+            {
+                a[i][j] = read[j + 1];
+                if(!list[i].ContainsKey(read[j + 1]))
+                {
+                    list[i].Add(read[j + 1], 1);
+                }
+                else
+                {
+                    list[i][read[j + 1]]++;
+                }
+            }
+        }
+        long ans = 0;
+        foreach(var v in list[0])
+        {
+            for(int i = 0; i < list[1].Count(); i++)
+            {
+                dfs(1, i, v.Key, v.Value);
+            }
+        }
+        Console.WriteLine(ans);
+        void dfs(int d, int idx, long temp, long cnt)
+        {
+            if(idx > list[d].Count()) return;
+            if(d == NX[0] - 1 && temp * list[d].ElementAt(idx).Key == NX[1])
+            {
+                ans += cnt * list[d].ElementAt(idx).Value;
+                return;
+            }
+            else if(d == NX[0] - 1 && temp * list[d].ElementAt(idx).Key != NX[1])
+            {
+                return;
+            }
+            else if(temp * list[d].ElementAt(idx).Key > NX[1])
+            {
+                return;
+            }
+            else
+            {
+                for(int i = 0; i < list[d + 1].Count(); i++)
+                {
+                    dfs(d + 1, i, temp * list[d].ElementAt(idx).Key, cnt * list[d].ElementAt(idx).Value);
+                }
+            }
+        }
+    }
+    public static void ABC233_D()
+    {
+        var NK = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var A = Console.ReadLine().Split().Select(long.Parse).ToArray();
+        var sum = new long[NK[0] + 1];
+        long ans = 0;
+        for(int i = 0; i < NK[0]; i++)
+        {
+            sum[i + 1] = sum[i] + A[i];
+        }
+        var list = new Dictionary<long, long>();
+        for(int r = 1; r <= NK[0]; r++)
+        {
+            if(!list.ContainsKey(sum[r - 1]))
+            {
+                list.Add(sum[r - 1], 1);
+            }
+            else
+            {
+                list[sum[r - 1]]++;
+            }
+            if(list.ContainsKey(sum[r] - NK[1]))
+            ans += list[sum[r] - NK[1]];
+        }
+        Console.WriteLine(ans);
+    }
+    public static void ABC233_E()
+    {
+        String s = Console.ReadLine();
+        var keta = new long[s.Length + 1];
+        for(int i = 0; i < s.Length; i++)
+        {
+            keta[i + 1] = (keta[i] + (s[i] - '0'));
+        }
+        var ans = new long[s.Length];
+        long temp = 0;
+        for(int i = 0; i < s.Length; i++)
+        {
+            temp += keta[s.Length - i];
+            ans[s.Length - i - 1] = temp % 10;
+            temp /= 10;
+        }
+        if(temp == 0)Console.WriteLine(string.Join("", ans));
+        else Console.WriteLine($"{temp}{string.Join("", ans)}");
+    }
+    public static void ARC132_A()
+    {
+        int n = int.Parse(Console.ReadLine());
+        var R = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        var C = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int q = int.Parse(Console.ReadLine());
+        for(int i = 0; i < q; i++)
+        {
+            var read = Console.ReadLine().Split().Select(int.Parse).ToArray();
+            if(R[read[0] - 1] + C[read[1] - 1] > n)
+            {
+                Console.Write("#");
+            }
+            else
+            {
+                Console.Write(".");
+            }
+        }
+    }
+    public static void ARC132_B()
+    {
+        int n = int.Parse(Console.ReadLine());
+        var p = Console.ReadLine().Split().Select(int.Parse).ToArray();
+        int one = 0;
+        for(int i = 0; i < n; i++)
+        {
+            if(p[i] == 1)
+            {
+                one = i;
+            }
+        }
+        int ans = intMax;
+        if(one == n - 1 && p[0] == n)
+        {
+            ans = 1;
+        }
+        else if(one == n - 1 && p[0] < p[1])
+        {
+            ans = 3;
+        }
+        else if(one == 0 && p[1] == n)
+        {
+            ans = 2;
+        }
+        else if(one == 0 && p[n - 1] == n)
+        {
+            ans = 0;
+        }
+        else if(p[0] < p[1] && p[one] < p[one + 1])
+        {
+            ans = Math.Min(one, n - one + 2);
+        }
+        else
+        {
+            ans = Math.Min(one + 2, (n - one));
+        }
+        Console.WriteLine(ans);
+    }
 }
 }
