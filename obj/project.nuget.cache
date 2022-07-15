@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "4GgupUJs1mm49Ud3uEJoDqeRN0gyNkVxbsXDKbo91hl4GBbpscIDO17dxnZO0xwjwJbiiNNXMZaaeQLAr+6o/Q==",
+  "dgSpecHash": "R2SItML76GQrxtnjqB6D4GWJUAyRJl30Nsi+lCryUj+yGrOFB3VuheohoHIHamhAknLSIIityzRM36gcOhXVcQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\mmasa\\OneDrive\\ドキュメント\\GitHub\\atcoder\\atcoder.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\mmasa\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
+  ],
   "logs": []
 }

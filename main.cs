@@ -9,14 +9,13 @@ using System.Text;
 
 namespace atcoder
 {
-    
     class Program
     {
         const int intMax = 1000000000;
         const long longMax = 2000000000000000000;
         static void Main(string[] args)
         {
-            Solve.ARC132_B();
+            Atcoder.ABC191_B();
         }
     }
 }

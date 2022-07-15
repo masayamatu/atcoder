@@ -19,7 +19,6 @@ C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\bin\Debug\net5.0\atcod
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\bin\Debug\net5.0\atcoder.runtimeconfig.json
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\bin\Debug\net5.0\atcoder.runtimeconfig.dev.json
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\bin\Debug\net5.0\atcoder.dll
-C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\bin\Debug\net5.0\ref\atcoder.dll
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\bin\Debug\net5.0\atcoder.pdb
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\obj\Debug\net5.0\atcoder.csproj.AssemblyReference.cache
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\obj\Debug\net5.0\atcoder.GeneratedMSBuildEditorConfig.editorconfig
@@ -30,3 +29,4 @@ C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\obj\Debug\net5.0\atcod
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\obj\Debug\net5.0\ref\atcoder.dll
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\obj\Debug\net5.0\atcoder.pdb
 C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\obj\Debug\net5.0\atcoder.genruntimeconfig.cache
+C:\Users\mmasa\OneDrive\ドキュメント\GitHub\atcoder\obj\Debug\net5.0\refint\atcoder.dll
